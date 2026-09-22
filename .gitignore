@@ -25,5 +25,6 @@ reseaux-sociaux/visuels/
 # « python rendu.py planche » et « diff » ecrivent ces images pour verifier le
 # rendu a l'oeil. Elles se refont a la demande.
 identite/anim/_*.png
-# Les PNG que ffmpeg assemble : « python rendu.py frames ».
-identite/anim/frames/
+# Les PNG que ffmpeg assemble, un dossier par scenario :
+# « rendu.py frames » et « rendu-loupe.py <scenario> frames ».
+identite/anim/frames*/
