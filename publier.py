@@ -16,6 +16,8 @@ Usage :
 """
 import configparser
 import ftplib
+import subprocess
+from datetime import datetime
 import hashlib
 import io
 import json
@@ -150,6 +152,49 @@ def retirer_pages(ftp, base):
             pass
 
 
+def enregistrer_dans_git(envoyes):
+    """Commite ce qui vient d'etre publie, si l'arbre est encore sale.
+
+    Le depot doit au moins contenir ce qui est en ligne. Quand on a pense a
+    committer avant de publier, il n'y a rien a faire et cette fonction se
+    tait. Sinon elle pose un commit de rattrapage : un message generique vaut
+    mieux qu'une version du site qui n'existe nulle part.
+
+    Rien de ce qui se passe ici ne doit faire echouer une publication : le
+    site est deja en ligne quand on arrive.
+    """
+    def git(*args):
+        return subprocess.run(("git",) + args, cwd=RACINE,
+                              capture_output=True, text=True)
+
+    if git("rev-parse", "--is-inside-work-tree").returncode != 0:
+        return                                  # pas un depot, rien a faire
+
+    sale = git("status", "--porcelain").stdout.strip()
+    if not sale:
+        sortie("Depot a jour : rien a enregistrer.")
+        return
+
+    nombre = len(sale.splitlines())
+    message = ("Publication du %s\n\n"
+               "%d fichier(s) envoyes sur l'hebergement, %d fichier(s) "
+               "modifies ici.\n\n"
+               "Commit de rattrapage pose par publier.py : ces modifications "
+               "etaient\nen ligne sans etre enregistrees. Le message ne dit "
+               "pas pourquoi elles\nont ete faites — pensez a committer "
+               "avant de publier."
+               % (datetime.now().strftime("%d/%m/%Y a %Hh%M"), envoyes, nombre))
+
+    git("add", "-A")
+    if git("commit", "-m", message).returncode == 0:
+        sortie("%d fichier(s) enregistres dans git." % nombre)
+        # Le hook post-commit pousse de lui-meme ; s'il n'existe pas, on
+        # essaie quand meme, et on se tait si ca echoue.
+        git("push", "--quiet", "origin", "HEAD")
+    else:
+        sortie("Les modifications n'ont pas pu etre enregistrees dans git.")
+
+
 def main():
     tout = "--tout" in sys.argv
     essai = "--essai" in sys.argv
@@ -228,6 +273,8 @@ def main():
     sortie("")
     sortie("%d fichier(s) publie(s)." % envoyes)
     sortie("Le site est en ligne sur https://btpexpertise.fr/")
+    sortie("")
+    enregistrer_dans_git(envoyes)
 
 
 if __name__ == "__main__":
