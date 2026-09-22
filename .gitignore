@@ -20,3 +20,8 @@ capture/assets/
 # Le site n'existe plus, ces fichiers ne servent plus a rien.
 capture/raw/
 reseaux-sociaux/visuels/
+
+# --- Sorties de controle de l'animation du logo ----------------------------
+# « python rendu.py planche » et « diff » ecrivent ces images pour verifier le
+# rendu a l'oeil. Elles se refont a la demande.
+identite/anim/_*.png
