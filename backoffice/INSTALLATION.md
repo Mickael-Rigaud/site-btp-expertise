@@ -168,6 +168,28 @@ extérieur** n'intervient.
 
 L'URL du service ne change pas. Rien à modifier dans le site.
 
+### La clé du CRM, à saisir une fois
+
+Le dépôt du site est **public**. La clé qui permet d'écrire dans le CRM n'est
+donc pas dans `Code.gs` : elle vit dans les propriétés du projet Apps Script,
+qui ne sont jamais exportées.
+
+À faire une seule fois, et à refaire si le projet est recréé :
+
+1. Éditeur Apps Script → **Paramètres du projet** (la roue dentée à gauche).
+2. Section **Propriétés du script** → **Ajouter une propriété**.
+3. Propriété : `CRM_CLE` — Valeur : la clé publiable du projet Supabase
+   `crm-groupe`, celle qui commence par `sb_publishable_`.
+4. **Enregistrer les propriétés**.
+
+Lancez ensuite **`testerCles`** : le journal doit afficher `OK  CRM_CLE`.
+
+Sans cette propriété, les rendez-vous continuent d'être pris, les courriels
+partent et l'agenda se remplit — **seul l'envoi au CRM est suspendu**, en
+silence. C'est voulu : une panne du CRM ne doit jamais faire perdre un
+rendez-vous. C'est aussi pourquoi il faut lancer `testerCles` après chaque
+redéploiement plutôt que de s'en apercevoir sur une vraie demande.
+
 ### Vérifier que tout fonctionne
 
 Dans la liste des fonctions, choisissez **`testerAgenda`** puis **Exécuter** : le

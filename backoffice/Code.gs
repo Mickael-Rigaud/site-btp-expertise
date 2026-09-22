@@ -16,6 +16,27 @@
 //  RÉGLAGES — les seules lignes à modifier
 // =====================================================================
 
+/**
+ * Une valeur sensible, rangée dans les propriétés du script.
+ *
+ * Le dépôt du site est public : rien de ce qui ouvre un accès ne doit être
+ * écrit dans ce fichier. Les propriétés, elles, restent dans le projet Apps
+ * Script et ne sont jamais exportées.
+ *
+ * Éditeur → Paramètres du projet → Propriétés du script → Ajouter.
+ *
+ * Renvoie "" si la propriété manque, plutôt que de lever : une clé absente
+ * doit suspendre l'envoi au CRM, jamais empêcher une prise de rendez-vous.
+ */
+function cle(nom) {
+  try {
+    return PropertiesService.getScriptProperties().getProperty(nom) || "";
+  } catch (erreur) {
+    return "";
+  }
+}
+
+
 var REGLAGES = {
   // Adresse qui reçoit les demandes (plusieurs adresses séparées par des virgules)
   destinataire: "contact@btpexpertise.fr",
@@ -47,12 +68,17 @@ var REGLAGES = {
   // ---- CRM Groupe (Supabase) ----
   // Chaque prise de rendez-vous crée un contact et une affaire dans la
   // pipeline BTP Expertise. L'écriture passe par une fonction dédiée de la
-  // base, qui n'autorise que ça : la clé ci-dessous ne donne aucun autre
-  // droit, et ne permet de lire aucune donnée du groupe.
+  // base, qui n'autorise que ça : la clé ne donne aucun autre droit et ne
+  // permet de lire aucune donnée du groupe.
+  //
+  // La clé ne figure PAS dans ce fichier : le dépôt du site est public, et
+  // qui la possède peut créer de faux prospects. Elle vit dans les propriétés
+  // du script — voir cle() plus bas, et backoffice/INSTALLATION.md.
+  //
   // Mettre crmActif à false pour suspendre l'envoi sans rien décâbler.
   crmActif: true,
   crmUrl: "https://qnidmkufauzguultdmky.supabase.co",
-  crmCle: "",
+  crmCle: cle("CRM_CLE"),
   crmCanal: "Site internet direct",
 
   // Noms des espaces de rangement créés automatiquement
@@ -347,6 +373,38 @@ function testerCrm() {
     Logger.log("Échec. Le détail est dans l'onglet « Erreurs » du classeur.");
     Logger.log("Causes habituelles : la fonction creer_prospect_btp n'existe pas");
     Logger.log("encore dans Supabase, ou son exécution n'est pas ouverte au rôle anon.");
+  }
+}
+
+
+/**
+ * Les propriétés du script sont-elles renseignées ?
+ *
+ * À lancer après tout redéploiement : une propriété absente ne se voit nulle
+ * part, l'envoi au CRM est simplement suspendu en silence.
+ */
+function testerCles() {
+  var attendues = [
+    ["CRM_CLE", "clé du CRM Groupe — commence par sb_publishable_"]
+  ];
+  var manquantes = 0;
+  for (var i = 0; i < attendues.length; i++) {
+    var v = cle(attendues[i][0]);
+    Logger.log("%s  %s", v ? "OK     " : "ABSENTE", attendues[i][0]);
+    if (v) {
+      Logger.log("        %s… (%s caractères)", v.substring(0, 16), String(v.length));
+    } else {
+      Logger.log("        %s", attendues[i][1]);
+      manquantes++;
+    }
+  }
+  Logger.log("");
+  if (manquantes) {
+    Logger.log("Éditeur → Paramètres du projet → Propriétés du script → Ajouter.");
+    Logger.log("Sans elle, les rendez-vous sont pris normalement mais n'arrivent");
+    Logger.log("pas dans le CRM.");
+  } else {
+    Logger.log("Tout est en place.");
   }
 }
 
