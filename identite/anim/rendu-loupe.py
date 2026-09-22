@@ -1,132 +1,164 @@
 # -*- coding: utf-8 -*-
-"""Rendu image par image de la variante "loupe" (logo-anime-loupe.svg).
+"""Rendu des animations ou la loupe grossit les batiments qui sont derriere.
 
-Meme principe que rendu.py : la choregraphie est celle du SVG, rejouee ici en
-numpy pour sortir des PNG que ffmpeg assemble en MP4 et en GIF.
+Les batiments sont poses a 72 % de leur taille ; le verre grossit x1,39 ce qui
+passe dessous. Quand la loupe se cale au centre, les deux facteurs s'annulent et
+l'image redonne exactement le logo.
+
+    python rendu-loupe.py <scenario> planche|frames|diff
+
+Scenarios : balayage (defaut), inspection, mise-au-point.
 """
 import numpy as np, os, sys
 from PIL import Image
 import rendu as base
+import commun as C
 
 W, H = base.W, base.H
 CX, CY = base.CX, base.CY
-R_VERRE = 505
-ECH, SOL = 0.72, base.SOL
-K = 1 / ECH
-TRAJET = [(0.0, -520, -80), (0.42, -130, 34), (0.72, 96, -28), (1.0, 0, 0)]
-DUR, DEL = 1.95, 0.40
-EASE = base.bezier(.45, .05, .3, 1)
-EASE_M = base.bezier(.2, .9, .25, 1)
-EASE_P = base.bezier(.16, .85, .3, 1)
-EASE_W = base.bezier(.3, .8, .2, 1)
+XX, YY = base.XX, base.YY
+EASE_TRAJET = base.bezier(.45, .05, .3, 1)
+EASE_ZOOM = base.bezier(.4, 0, .2, 1.08)
 
-YY, XX = np.mgrid[0:H, 0:W].astype(np.float32)
+SCENARIOS = {
+    # la loupe entre par la gauche, balaie les facades, depasse puis se cale
+    "balayage": dict(
+        duree=5.0, trace=None,
+        trajet=[(0, -380, -70), (.42, -130, 34), (.72, 96, -28), (1, 0, 0)],
+        t_trajet=0.40, d_trajet=1.95,
+        zoom=None, manche=None, nom=(2.35, .9), t_reflet=2.90),
 
+    # elle s'arrete sur chaque batiment, comme on releve un point a la fois
+    "inspection": dict(
+        duree=6.0, trace=None,
+        trajet=[(0, -440, -40),
+                (.16, -215, 100), (.28, -215, 100),     # l'immeuble en escalier
+                (.44, -20, -70), (.56, -20, -70),       # la tour vitree
+                (.72, 185, 85), (.84, 185, 85),         # l'immeuble de droite
+                (1, 0, 0)],
+        t_trajet=0.35, d_trajet=3.00,
+        zoom=None, manche=None, nom=(3.45, .9), t_reflet=4.00),
 
-def position(t):
-    """Position de la loupe. Comme en CSS, l'easing joue sur chaque segment."""
-    p = base.prog(t, DEL, DUR, lambda x: x)      # avancement lineaire 0..1
-    for (p0, x0, y0), (p1, x1, y1) in zip(TRAJET, TRAJET[1:]):
-        if p <= p1 or p1 == 1.0:
-            q = EASE(0 if p1 == p0 else min(1, max(0, (p - p0) / (p1 - p0))))
-            return x0 + (x1 - x0) * q, y0 + (y1 - y0) * q
-    return 0.0, 0.0
-
-
-def ville(t, fond=(255, 255, 255)):
-    """Les batiments a l'echelle 1, a l'instant t, sur fond transparent.
-
-    Les canaux de couleur portent deja la teinte du fond (avec alpha 0) : sans
-    cela, les pixels a demi couverts seraient melanges avec du noir puis
-    recomposes sur le fond, ce qui cerne chaque forme d'un liseré sombre."""
-    cv = np.zeros((H, W, 4), np.float32)
-    cv[:, :, :3] = np.array(fond, np.float32)
-    for i in range(7):
-        p = base.prog(t, 0.10 + (6 - i) * 0.075, 0.5, EASE_M)
-        if p > 0:
-            base.pose(cv, "esc%d" % i, -90 * (1 - p), 34 * (1 - p), min(1, p * 2.2), clip_sol=True)
-    p = base.prog(t, .45, .9, EASE_P)
-    if p > 0: base.pose(cv, "tour-cyan", 0, 880 * (1 - p), 1, clip_sol=True)
-    p = base.prog(t, .62, .75, EASE_P)
-    if p > 0: base.pose(cv, "tour-orange", 0, 430 * (1 - p), 1, clip_sol=True)
-    return cv
+    # la loupe est posee, et c'est le grossissement qui monte : la mise au point
+    "mise-au-point": dict(
+        duree=5.2, trace=(0.85, 1.05),
+        trajet=[(0, 0, 0), (1, 0, 0)], t_trajet=0.0, d_trajet=0.1,
+        zoom=[(0, 1.0), (.78, 1.06), (1, 1.0)], t_zoom=2.00, d_zoom=0.85,
+        manche=(1.95, .45), nom=(2.85, .9), t_reflet=3.60),
+}
 
 
-def colle(dst, src, dx=0, dy=0, masque=None):
-    """Recopie src (deja compose sur le fond) dans dst, decale, sous un masque.
-
-    src porte la couleur du fond dans ses zones vides : on l'applique donc en
-    opaque. Repasser par son alpha melangerait une deuxieme fois les pixels de
-    bord avec le fond et delaverait chaque contour."""
-    if dx or dy:
-        src = np.roll(np.roll(src, int(round(dy)), 0), int(round(dx)), 1)
-    a = np.ones((H, W, 1), np.float32) if masque is None else masque[:, :, None]
-    dst[:, :, :3] = src[:, :, :3] * a + dst[:, :, :3] * (1 - a)
-    dst[:, :, 3:4] = np.maximum(dst[:, :, 3:4], a * 255)
+def etape(pts, p, ease):
+    """Interpole une liste (pourcentage, valeurs...) comme le ferait le CSS :
+    la courbe d'acceleration joue entre chaque paire de reperes."""
+    for a, b in zip(pts, pts[1:]):
+        if p <= b[0] or b[0] >= 1.0:
+            q = ease(0 if b[0] == a[0] else min(1, max(0, (p - a[0]) / (b[0] - a[0]))))
+            return [x + (y - x) * q for x, y in zip(a[1:], b[1:])]
+    return list(pts[-1][1:])
 
 
-def frame(t, fond=(255, 255, 255, 255)):
-    cv = np.zeros((H, W, 4), np.float32); cv[:, :, :] = fond
-    lx, ly = position(t)
-    v = ville(t, fond[:3])
-    dist = np.hypot(XX - (CX + lx), YY - (CY + ly))
+def redimensionne(rgb, echelle, dx, dy):
+    """L'image, mise a l'echelle autour du centre du verre, puis decalee."""
+    if abs(echelle - 1) < 1e-4:
+        src = rgb
+        ox, oy = 0, 0
+    else:
+        w, h = int(round(W * echelle)), int(round(H * echelle))
+        src = np.array(Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8), "RGB")
+                       .resize((w, h), Image.LANCZOS), np.float32)
+        ox, oy = CX * (1 - echelle), CY * (1 - echelle)
+    out = np.zeros((H, W, 3), np.float32); out[:, :, :] = rgb[0, 0]
+    x0, y0 = int(round(ox + dx)), int(round(oy + dy))
+    sx0, sy0 = max(0, -x0), max(0, -y0)
+    dx0, dy0 = max(0, x0), max(0, y0)
+    ww = min(src.shape[1] - sx0, W - dx0); hh = min(src.shape[0] - sy0, H - dy0)
+    if ww > 0 and hh > 0:
+        out[dy0:dy0 + hh, dx0:dx0 + ww] = src[sy0:sy0 + hh, sx0:sx0 + ww]
+    return out
 
-    # les batiments en petit, masques partout ou le verre passe
-    # on reduit les couleurs seules : Pillow premultiplie l'alpha au
-    # redimensionnement, ce qui noircirait toutes les zones transparentes
-    petit = Image.fromarray(np.clip(v[:, :, :3], 0, 255).astype(np.uint8), "RGB").resize(
-        (int(W * ECH), int(H * ECH)), Image.LANCZOS)
-    fondv = np.zeros((H, W, 4), np.float32); fondv[:, :, :3] = np.array(fond[:3], np.float32)
-    ox, oy = int(round(CX * (1 - ECH))), int(round(CY * (1 - ECH)))
-    fondv[oy:oy + petit.height, ox:ox + petit.width, :3] = np.array(petit, np.float32)
-    colle(cv, fondv, masque=(dist > R_VERRE).astype(np.float32))
 
-    # sous le verre : les memes batiments a l'echelle 1, cales sur le centre du verre
-    colle(cv, v, (1 - K) * lx, (1 - K) * ly, masque=(dist <= R_VERRE).astype(np.float32))
+def fabrique(nom_scenario):
+    S = SCENARIOS[nom_scenario]
 
-    # reflet sur le verre
-    cyc = (t - 2.90) % 5.2
-    if 0 <= cyc <= 1.30:
-        q = base.EASE_T(cyc / 1.30)
-        th = np.radians(-18.0)
-        u = (XX - (lx - 700 + q * 2400)) * np.cos(th) + (YY - CY - ly) * np.sin(th)
-        g = np.clip(1 - np.abs(u) / 105.0, 0, 1) ** 1.5
-        inten = (g * (dist <= R_VERRE) * 0.55)[:, :, None]
-        cv[:, :, :3] = 255 - (255 - cv[:, :, :3]) * (1 - inten)
+    def ville(t, fond):
+        """Les batiments a l'echelle 1, sur un canvas deja teinte du fond : sans
+        cela les pixels a demi couverts seraient melanges avec du noir."""
+        cv = np.zeros((H, W, 4), np.float32); cv[:, :, :3] = np.array(fond[:3], np.float32)
+        for i in range(7):
+            p = base.prog(t, 0.10 + (6 - i) * 0.075, 0.5, base.EASE_M)
+            if p > 0:
+                base.pose(cv, "esc%d" % i, -90 * (1 - p), 34 * (1 - p),
+                          min(1, p * 2.2), clip_sol=True)
+        p = base.prog(t, .45, .9, base.EASE_P)
+        if p > 0: base.pose(cv, "tour-cyan", 0, 880 * (1 - p), 1, clip_sol=True)
+        p = base.prog(t, .62, .75, base.EASE_P)
+        if p > 0: base.pose(cv, "tour-orange", 0, 430 * (1 - p), 1, clip_sol=True)
+        return cv
 
-    base.pose(cv, "anneau", lx, ly)
+    def frame(t, fond=(255, 255, 255, 255)):
+        cv = np.zeros((H, W, 4), np.float32); cv[:, :, :] = fond
+        p = base.prog(t, S["t_trajet"], S["d_trajet"], lambda x: x)
+        lx, ly = etape(S["trajet"], p, EASE_TRAJET)
+        k = C.K
+        if S.get("zoom"):
+            q = base.prog(t, S["t_zoom"], S["d_zoom"], lambda x: x)
+            k = 1 + (C.K - 1) * etape(S["zoom"], q, EASE_ZOOM)[0]
+        v = ville(t, fond)[:, :, :3]
+        dist = np.hypot(XX - CX - lx, YY - CY - ly)
+        dehors = (dist > C.R_VERRE).astype(np.float32)[:, :, None]
+        dedans = 1 - dehors
 
-    p = base.prog(t, 2.35, .9, EASE_W)
-    if p > 0:
-        base.pose(cv, "texte", mask=(XX <= p * W).astype(np.float32))
-    return Image.fromarray(np.clip(cv, 0, 255).astype(np.uint8), "RGBA")
+        # les batiments en petit, partout ou le verre ne passe pas
+        petit = redimensionne(v, C.ECH, 0, 0)
+        cv[:, :, :3] = petit * dehors + cv[:, :, :3] * (1 - dehors)
+        # sous le verre : les memes, grossis, cales sur le centre du verre
+        gros = redimensionne(v, C.ECH * k, (1 - k) * lx, (1 - k) * ly)
+        cv[:, :, :3] = gros * dedans + cv[:, :, :3] * (1 - dedans)
+
+        base.reflet(cv, t, S["t_reflet"], lx, ly)
+
+        # la loupe : anneau, puis le manche qui la prolonge
+        if S["trace"]:
+            pr = base.prog(t, S["trace"][0], S["trace"][1], base.EASE_T)
+            if pr > 0:
+                m = ((base.ANG <= pr * 360.0) & (base.RAD <= 540)).astype(np.float32)
+                att = base.prog(t, S["trace"][0] + S["trace"][1] - .08, .08, base.EASE_O)
+                if att > 0: m = np.maximum(m, base.ATTACHE * att)
+                base.pose(cv, "anneau", mask=m)
+        else:
+            base.pose(cv, "anneau", lx, ly)
+
+        nom = base.prog(t, S["nom"][0], S["nom"][1], base.EASE_W)
+        visible = 1.0
+        if S["manche"]:
+            visible = base.prog(t, S["manche"][0], S["manche"][1], base.EASE_O)
+        if visible > 0:
+            dec = lambda m: np.roll(np.roll(m, int(round(ly)), 0), int(round(lx)), 1)
+            avance = (YY <= 1042 + visible * (1490 - 1042) + C.MARGE_Y + ly).astype(np.float32)
+            base.pose_couleur(cv, C.ENCRE,
+                              dec(base.M_HAUT) * avance * (XX > nom * C.LOGO_W + C.MARGE_X))
+            base.pose_couleur(cv, C.ENCRE, dec(base.M_BAS) * avance)
+
+        if nom > 0:
+            base.pose(cv, "texte", mask=(XX <= nom * C.LOGO_W + C.MARGE_X).astype(np.float32))
+        return Image.fromarray(np.clip(cv, 0, 255).astype(np.uint8), "RGBA")
+
+    return frame, S
 
 
 if __name__ == "__main__":
-    mode = sys.argv[1] if len(sys.argv) > 1 else "planche"
+    args = [a for a in sys.argv[1:]]
+    nom = args[0] if args and args[0] in SCENARIOS else "balayage"
+    mode = args[-1] if args and args[-1] in ("planche", "frames", "diff") else "planche"
+    frame, S = fabrique(nom)
     ICI = os.path.dirname(os.path.abspath(__file__))
     if mode == "planche":
-        ts = [0.3, 0.7, 1.0, 1.3, 1.6, 1.9, 2.2, 2.5, 2.8, 3.1, 3.4, 3.7]
-        cw, ch = W // 3, H // 3
-        pl = Image.new("RGB", (4 * cw, 3 * ch), (222, 227, 234))
-        for i, t in enumerate(ts):
-            pl.paste(frame(t).convert("RGB").resize((cw, ch), Image.LANCZOS),
-                     ((i % 4) * cw, (i // 4) * ch))
-        pl.save(os.path.join(ICI, "_planche-loupe.png"))
-        print("planche ok")
+        d = S["duree"]
+        base.planche(frame, [d * i / 12.0 for i in range(1, 13)],
+                     os.path.join(ICI, "_planche-%s.png" % nom))
+        print("planche ok", nom)
     elif mode == "diff":
-        # l'image finale doit redonner le logo d'origine
-        a = np.array(frame(4.6).convert("RGB"), int)
-        ref = Image.new("RGBA", (W, H), (255, 255, 255, 255))
-        ref.alpha_composite(Image.open(os.path.join(os.path.dirname(ICI),
-                                                    "logo-principal.png")).convert("RGBA"))
-        d = np.abs(a - np.array(ref.convert("RGB"), int)).sum(axis=2)
-        print("pixels differents > 30 :", int((d > 30).sum()), "/", W * H,
-              " ecart max :", int(d.max()))
+        base.controle_diff(frame, S["duree"])
     else:
-        fps, dur = 30, 4.6
-        fd = os.path.join(ICI, "frames-loupe"); os.makedirs(fd, exist_ok=True)
-        for k in range(int(fps * dur)):
-            frame(k / fps).convert("RGB").resize((1080, 880), Image.LANCZOS)\
-                .save(os.path.join(fd, "f%04d.png" % k))
-        print("frames ok", int(fps * dur))
+        base.sortir_frames(frame, S["duree"], os.path.join(ICI, "frames-" + nom))
