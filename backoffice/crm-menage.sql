@@ -8,9 +8,12 @@
 --  IMPORTANT — une précaution à comprendre avant de lancer :
 --
 --  La fonction d'inscription réutilise un contact existant quand l'adresse
---  e-mail est déjà connue. Un de mes essais a utilisé adresse.dessai@exemple.fr :
---  si ce contact existait déjà pour RGD Renova, il n'a pas été créé mais
---  complété, et le supprimer détruirait une fiche légitime.
+--  e-mail est déjà connue. Si l'un des essais a employé une adresse déjà
+--  connue du CRM, le contact n'a pas été créé mais complété : le supprimer
+--  détruirait une fiche légitime.
+--
+--  Les adresses d'essai sont à écrire ci-dessous avant de lancer le script.
+--  Ce dépôt est public : n'y laissez aucune adresse réelle.
 --
 --  Ce fichier ne supprime donc un contact que s'il ne reste attaché à aucune
 --  affaire. Les autres sont simplement détachés de l'activité BTP.
@@ -29,9 +32,7 @@ with essais as (
   where lower(email) in (
           'essai@btpexpertise.fr',
           'sonde@btpexpertise.fr',
-          'adresse.dessai@exemple.fr',
-          'adresse.dessai@exemple.fr',   -- adresse saisie par erreur
-          'adresse.dessai@exemple.fr'
+          'adresse.dessai@exemple.fr'   -- remplacer par les adresses reellement utilisees
         )
      or upper(coalesce(last_name, ''))  like 'A SUPPRIMER%'
      or upper(coalesce(first_name, '')) in ('TEST', 'ESSAI', 'SONDE')
@@ -61,8 +62,6 @@ with essais as (
   where lower(email) in (
           'essai@btpexpertise.fr',
           'sonde@btpexpertise.fr',
-          'adresse.dessai@exemple.fr',
-          'adresse.dessai@exemple.fr',
           'adresse.dessai@exemple.fr'
         )
      or upper(coalesce(last_name, ''))  like 'A SUPPRIMER%'
@@ -78,8 +77,6 @@ with essais as (
   where lower(email) in (
           'essai@btpexpertise.fr',
           'sonde@btpexpertise.fr',
-          'adresse.dessai@exemple.fr',
-          'adresse.dessai@exemple.fr',
           'adresse.dessai@exemple.fr'
         )
      or upper(coalesce(last_name, ''))  like 'A SUPPRIMER%'
@@ -95,8 +92,6 @@ with essais as (
   where lower(email) in (
           'essai@btpexpertise.fr',
           'sonde@btpexpertise.fr',
-          'adresse.dessai@exemple.fr',
-          'adresse.dessai@exemple.fr',
           'adresse.dessai@exemple.fr'
         )
 )
