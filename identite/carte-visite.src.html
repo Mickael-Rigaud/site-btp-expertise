@@ -1,0 +1,343 @@
+<title>Carte BTP Expertise</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --marine:#262C42;
+    --marine-deep:#1B2033;
+    --cyan:#0BBBF6;
+    --orange:#FF8A00;
+    --papier:#FFFFFF;
+
+    --ink:#1F2433;
+    --ink-soft:#5C6377;
+    --ground:#EDEEF2;
+    --panel:#FFFFFF;
+    --line:#D6D9E2;
+    --accent:#0B6FA8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#E7E9F0;
+      --ink-soft:#9AA1B4;
+      --ground:#14171F;
+      --panel:#1C202B;
+      --line:#2E3443;
+      --accent:#4FC3F7;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#E7E9F0;
+    --ink-soft:#9AA1B4;
+    --ground:#14171F;
+    --panel:#1C202B;
+    --line:#2E3443;
+    --accent:#4FC3F7;
+  }
+
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+    padding-block:40px 56px;
+    padding-left:20px; padding-right:20px;
+  }
+  .wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:30px;}
+
+  header h1{
+    font-family:"Archivo","Segoe UI",system-ui,sans-serif;
+    font-weight:800;font-size:22px;letter-spacing:-.01em;margin:0 0 6px;
+    text-wrap:balance;
+  }
+  header p{margin:0;color:var(--ink-soft);font-size:14px;max-width:62ch;line-height:1.5;}
+
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .btn{
+    font:inherit;font-size:13px;font-weight:500;
+    background:var(--panel);color:var(--ink);
+    border:1px solid var(--line);border-radius:999px;
+    padding:8px 15px;cursor:pointer;
+  }
+  .btn[aria-pressed="true"]{background:var(--marine);border-color:var(--marine);color:#fff;}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .hint{font-size:12.5px;color:var(--ink-soft);}
+
+  .faces{display:flex;flex-wrap:wrap;gap:26px;}
+  figure{margin:0;display:flex;flex-direction:column;gap:9px;}
+  figcaption{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;
+  }
+
+  /* ---- La carte : 91 x 61 mm = 85 x 55 mm + 3 mm de fond perdu ---- */
+  .card{
+    --bleed:3em;                /* fond perdu ; 0 en format fini */
+    position:relative;
+    font-size:1mm;              /* 1em = 1 mm a l'interieur de la carte */
+    width:calc(85em + 2*var(--bleed));
+    height:calc(55em + 2*var(--bleed));
+    overflow:hidden;
+    box-shadow:0 2px 3px rgba(20,24,34,.12),0 10px 26px rgba(20,24,34,.16);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  @media (max-width:820px){ .card{zoom:.92} }
+  @media (max-width:460px){ .card{zoom:.76} }
+  @media (max-width:380px){ .card{zoom:.66} }
+
+  .faces.fini .card{--bleed:0em;}
+
+  /* Reperes : trait de coupe (85x55) + zone de securite (75x45) */
+  .marks{position:absolute;inset:0;display:none;pointer-events:none;z-index:5;}
+  .show-marks .marks{display:block;}
+  .marks i{position:absolute;display:block;}
+  .marks .trim{inset:var(--bleed);border:.25em dashed rgba(255,138,0,.85);}
+  .marks .safe{inset:calc(5em + var(--bleed));border:.25em dashed rgba(11,187,246,.75);}
+
+  /* ---------- RECTO ---------- */
+  .recto{background:var(--papier);color:var(--marine);}
+  .recto .field{
+    position:absolute;
+    top:calc(5em + var(--bleed));left:calc(5em + var(--bleed));
+    right:calc(5em + var(--bleed));bottom:calc(9em + var(--bleed));
+    display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;
+    column-gap:3em;
+  }
+  .recto .logo{
+    grid-area:1 / 1;justify-self:start;align-self:start;
+    height:17.5em;width:auto;display:block;
+  }
+  .recto .who{grid-area:2 / 1;align-self:end;}
+  .recto .name{
+    font-family:"Archivo",sans-serif;font-weight:700;
+    font-size:4.4em;line-height:1;letter-spacing:-.015em;margin:0 0 1.6em;
+    color:var(--marine);white-space:nowrap;
+  }
+  .recto .role{
+    font-family:"Archivo",sans-serif;font-weight:600;
+    font-size:2.3em;line-height:1;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--orange);margin:0;white-space:nowrap;
+  }
+  .recto .role span{color:var(--marine);opacity:.55;}
+  .recto dl{
+    grid-area:2 / 2;align-self:end;justify-self:end;
+    margin:0;text-align:right;display:grid;gap:2em;
+  }
+  .recto dt{
+    font-size:1.7em;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--cyan);font-weight:600;margin-bottom:.35em;
+  }
+  .recto dd{
+    margin:0;font-size:2.3em;line-height:1;font-weight:500;
+    color:var(--marine);font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .recto .rule{
+    position:absolute;left:calc(5em + var(--bleed));bottom:calc(13em + var(--bleed));
+    width:14em;height:.5em;background:var(--orange);
+  }
+  .recto .foot{
+    position:absolute;left:0;right:0;bottom:0;
+    height:calc(5.5em + var(--bleed));
+    background:var(--marine);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 calc(5em + var(--bleed)) var(--bleed);
+    font-size:1em;
+  }
+  .recto .foot .adr{font-size:2em;letter-spacing:.02em;color:rgba(255,255,255,.78);}
+  .recto .foot .web{
+    font-family:"Archivo",sans-serif;font-weight:700;
+    font-size:2.4em;letter-spacing:.06em;color:#fff;
+  }
+
+  /* ---------- VERSO ---------- */
+  .verso{background:var(--marine-deep);color:#fff;}
+  .verso .field{
+    position:absolute;
+    top:calc(5em + var(--bleed));left:calc(5em + var(--bleed));
+    right:calc(5em + var(--bleed));bottom:calc(6em + var(--bleed));
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    justify-content:space-between;
+  }
+  .verso .logo{height:17em;width:auto;display:block;}
+  .verso .baseline{
+    font-family:"Archivo",sans-serif;font-weight:500;
+    font-size:2.5em;line-height:1.3;margin:0;color:var(--cyan);
+    letter-spacing:.02em;max-width:30em;
+  }
+  .verso ul{
+    list-style:none;margin:0;padding:0;
+    display:grid;grid-template-columns:1fr 1fr;gap:1.4em 3.5em;
+    text-align:left;width:100%;
+  }
+  .verso li{
+    font-size:2.4em;line-height:1.2;color:rgba(255,255,255,.9);
+    display:flex;gap:.75em;align-items:baseline;
+  }
+  .verso li::before{
+    content:"";flex:none;width:.45em;height:.45em;border-radius:50%;
+    background:var(--cyan);transform:translateY(-.15em);
+  }
+  .verso li:nth-child(even)::before{background:var(--orange);}
+  .verso li.wide{grid-column:1 / -1;}
+  .verso .zone{
+    margin:0;font-size:2em;letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.52);font-weight:500;
+  }
+  .verso .edge{
+    position:absolute;left:0;right:0;bottom:0;
+    height:calc(2.5em + var(--bleed));
+    background:linear-gradient(90deg,var(--cyan) 0 42%,var(--orange) 42% 100%);
+  }
+
+  /* ---------- Fiche imprimeur ---------- */
+  .specs{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:22px 24px;
+  }
+  .specs h2{
+    font-family:"Archivo",sans-serif;font-size:13px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px;color:var(--ink-soft);
+  }
+  .specs dl{
+    margin:0;display:grid;grid-template-columns:minmax(9rem,auto) 1fr;
+    gap:9px 20px;font-size:13.5px;line-height:1.45;
+  }
+  .specs dt{color:var(--ink-soft);}
+  .specs dd{margin:0;}
+  .specs dd b{font-weight:600;}
+  @media (max-width:520px){ .specs dl{grid-template-columns:1fr;gap:2px 0;} .specs dd{margin-bottom:9px;} }
+
+  @media print{
+    body{background:#fff;margin:0;padding:0;}
+    header,.bar,.hint,.specs,figcaption,.marks{display:none !important;}
+    .wrap{gap:0;max-width:none;}
+    .faces{display:block;gap:0;}
+    figure{gap:0;break-inside:avoid;display:block;}
+    figure:first-child{break-after:page;}
+    body.face-recto figure:last-of-type,
+    body.face-verso figure:first-of-type{display:none !important;}
+    body.face-recto figure:first-of-type{break-after:auto;}
+    .card{zoom:1;box-shadow:none;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+</style>
+<style id="pagesize">@page{ size:91mm 61mm; margin:0; }</style>
+
+<div class="wrap">
+  <header>
+    <h1>Carte de visite — Mickael Rigaud</h1>
+    <p>Recto / verso à l'échelle réelle, fond perdu compris. Les repères montrent le trait de coupe (orange) et la zone de sécurité où doit rester le texte (cyan) ; ils ne s'impriment pas.</p>
+  </header>
+
+  <div class="bar">
+    <button class="btn" id="bleed" type="button" aria-pressed="true">Fond perdu 91 × 61 mm</button>
+    <button class="btn" id="fini" type="button" aria-pressed="false">Format fini 85 × 55 mm</button>
+    <button class="btn" id="marks" type="button" aria-pressed="false">Afficher les repères</button>
+    <button class="btn" id="print" type="button">Imprimer / exporter en PDF</button>
+  </div>
+  <p class="hint" style="margin:-18px 0 0">Dans la boîte d'impression : marges « Aucune », échelle 100 %, graphiques d'arrière-plan activés. Le format fini 85 × 55 est celui à importer dans Canva.</p>
+
+  <div class="faces" id="faces">
+    <figure>
+      <figcaption>Recto</figcaption>
+      <div class="card recto">
+        <div class="field">
+          <img class="logo" src="__LOGO_CLAIR__" alt="BTP Expertise">
+          <div class="who">
+            <p class="name">Mickael Rigaud</p>
+            <p class="role">Fondateur <span>· Expert bâtiment</span></p>
+          </div>
+          <dl>
+            <div>
+              <dt>Téléphone</dt>
+              <dd>06 81 65 15 91</dd>
+            </div>
+            <div>
+              <dt>E-mail</dt>
+              <dd>contact@btpexpertise.fr</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="rule"></div>
+        <div class="foot">
+          <span class="adr">18 Place Masséna, 06000 Nice</span>
+          <span class="web">btpexpertise.fr</span>
+        </div>
+        <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+      </div>
+    </figure>
+
+    <figure>
+      <figcaption>Verso</figcaption>
+      <div class="card verso">
+        <div class="field">
+          <img class="logo" src="__LOGO_SOMBRE__" alt="BTP Expertise">
+          <p class="baseline">Expertise bâtiment &amp; Assistance à Maîtrise d'Ouvrage</p>
+          <ul>
+            <li>Fissures &amp; structures</li>
+            <li>Infiltrations &amp; étanchéité</li>
+            <li>Malfaçons &amp; non-conformités</li>
+            <li>Expertise avant achat</li>
+            <li class="wide">Réception de travaux · Maîtrise d'œuvre &amp; suivi de chantier</li>
+          </ul>
+          <p class="zone">Alpes-Maritimes · Var</p>
+        </div>
+        <div class="edge"></div>
+        <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+      </div>
+    </figure>
+  </div>
+
+  <section class="specs">
+    <h2>À transmettre à l'imprimeur</h2>
+    <dl>
+      <dt>Format fini</dt>
+      <dd><b>85 × 55 mm</b> — format carte de visite européen, paysage</dd>
+      <dt>Fichier fourni</dt>
+      <dd><b>91 × 61 mm</b>, fond perdu de 3 mm sur les quatre côtés</dd>
+      <dt>Zone de sécurité</dt>
+      <dd>5 mm après coupe : aucun texte au-delà</dd>
+      <dt>Couleurs</dt>
+      <dd>Quadri recto-verso. Bleu nuit <b>#262C42</b>, cyan <b>#0BBBF6</b>, orange <b>#FF8A00</b> — à convertir en CMJN par l'imprimeur</dd>
+      <dt>Papier conseillé</dt>
+      <dd>350 g couché, pelliculage soft-touch mat — le verso bleu nuit marque moins les traces de doigts qu'en brillant</dd>
+      <dt>Version Canva</dt>
+      <dd>Le PDF au format fini <b>85 × 55 mm</b> s'importe dans Canva : textes modifiables, logo en image à repositionner</dd>
+      <dt>Résolution</dt>
+      <dd>Logo fourni en 900 px de large, suffisant pour les 15 mm d'impression (≈ 1500 dpi)</dd>
+    </dl>
+  </section>
+</div>
+
+<script>
+  const faces = document.getElementById('faces');
+  const marks = document.getElementById('marks');
+  const bleedBtn = document.getElementById('bleed');
+  const finiBtn = document.getElementById('fini');
+  const pagesize = document.getElementById('pagesize');
+
+  function setFormat(withBleed){
+    faces.classList.toggle('fini', !withBleed);
+    bleedBtn.setAttribute('aria-pressed', String(withBleed));
+    finiBtn.setAttribute('aria-pressed', String(!withBleed));
+    pagesize.textContent = withBleed
+      ? '@page{ size:91mm 61mm; margin:0; }'
+      : '@page{ size:85mm 55mm; margin:0; }';
+  }
+  bleedBtn.addEventListener('click', () => setFormat(true));
+  finiBtn.addEventListener('click', () => setFormat(false));
+
+  marks.addEventListener('click', () => {
+    const on = marks.getAttribute('aria-pressed') === 'true';
+    marks.setAttribute('aria-pressed', String(!on));
+    marks.textContent = on ? 'Afficher les repères' : 'Masquer les repères';
+    faces.classList.toggle('show-marks', !on);
+  });
+
+  document.getElementById('print').addEventListener('click', () => window.print());
+
+  const q = new URLSearchParams(location.search);
+  // ?bleed=0 : format fini ; ?face=recto|verso : une seule face a l'impression.
+  if (q.get('bleed') === '0') setFormat(false);
+  const face = q.get('face');
+  if (face === 'recto' || face === 'verso') document.body.classList.add('face-' + face);
+</script>

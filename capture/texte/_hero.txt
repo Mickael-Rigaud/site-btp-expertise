@@ -1,0 +1,47 @@
+en-tablet e-flex e-con-boxed e-con e-parent" data-id="2eda025" data-element_type="container" data-e-type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-445ceea elementor-mobile-align-center elementor-widget elementor-widget-button" data-id="445ceea" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+										<a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href="https://contactbtpexpertiseriviera-pcoxq.wpcomstaging.com/?page_id=108">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">Demandez une expertise</span>
+					</span>
+					</a>
+								</div>
+					</div>
+				</div>
+				</header>
+<main id="content" class="site-main post-19 page type-page status-publish hentry">
+	<div class="page-content">
+				<div data-elementor-type="wp-page" data-elementor-id="19" class="elementor elementor-19" data-elementor-post-type="page">
+				<div class="elementor-element elementor-element-f818ae8 e-flex e-con-boxed e-con e-parent" data-id="f818ae8" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;video&quot;,&quot;background_video_link&quot;:&quot;https:\/\/videos.files.wordpress.com\/MvjQWJmP\/btp-expertise-riviera-nice-2.mp4&quot;,&quot;background_video_start&quot;:0,&quot;background_video_end&quot;:0}">
+					<div class="e-con-inner">
+		<div class="elementor-background-video-container elementor-hidden-mobile">
+							<div class="elementor-background-video-embed" role="presentation"></div>
+						</div>		<div class="elementor-element elementor-element-802b7b1 elementor-widget elementor-widget-heading" data-id="802b7b1" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+					<h2 class="elementor-heading-title elementor-size-default">Cabinet d'expertise en bâtiment<br> &amp; maîtrise d'œuvre</h2>				</div>
+				<div class="elementor-element elementor-element-480a6c9 elementor-widget elementor-widget-text-editor" data-id="480a6c9" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+									<p>Accompagnement technique, suivi de chantier et conseil pour vos projets sur la Côte d’Azur.</p>								</div>
+				<div class="elementor-element elementor-element-d349011 elementor-align-center elementor-widget elementor-widget-button" data-id="d349011" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+										<a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href="#">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">Demander une étude</span>
+					</span>
+					</a>
+								</div>
+					</div>
+				</div>
+		<div class="elementor-element elementor-element-6a9f6d53 e-con-full e-flex e-con e-parent" data-id="6a9f6d53" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;shape_divider_top&quot;:&quot;triangle&quot;}">
+				<div class="elementor-shape elementor-shape-top" aria-hidden="true" data-negative="false">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+	<path class="elementor-shape-fill" d="M500,98.9L0,6.1V0h1000v6.1L500,98.9z"/>
+</svg>		</div>
+		<div class="elementor-element elementor-element-f8d884d e-con-full e-flex e-con e-child" data-id="f8d884d" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-0d7f6ff elementor-headline--style-highlight elementor-widget elementor-widget-animated-headline" data-id="0d7f6ff" data-element_type="widget" data-e-type="widget" data-settings="{&quot;marker&quot;:&quot;underline&quot;,&quot;highlighted_text&quot;:&quot;nos expertises&quot;,&quot;headline_style&quot;:&quot;highlight&quot;,&quot;loop&quot;:&quot;yes&quot;,&quot;highlight_animation_duration&quot;:1200,&quot;highlight_iteration_delay&quot;:8000}" data-widget_type="animated-headline.default">
+							<h3 class="elementor-headline">
+				<span class="elementor-headline-dynamic-wrapper elementor-headline-text-wrapper">
+					<span class="elementor-headline-dynamic-text elementor-headline-text-active">nos expertises</span>
+				</span>
+				</h3>
+						</div>
+				<div class="elementor-element elementor-element-48ccc013 elementor-widget elementor-widget-text-editor" data-id="48ccc013" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+									<p>Expe

@@ -1,0 +1,27 @@
+PHOTOS DE CHANTIER DU CABINET
+=============================
+
+Les vraies photos de Mickael, celles qui distinguent les publicites des
+images de banque. Tout ce qui est depose ici est prioritaire : le script
+reseaux-sociaux/pub_meta.py cherche ses images dans ce dossier AVANT
+site/assets/img/ et reserve-images/.
+
+Ce qui compte :
+  - prise au telephone, sans probleme
+  - au moins 1200 pixels de large
+  - le desordre du chantier est un atout, pas un defaut
+
+Pour l'utiliser dans une annonce, mettre son nom de fichier dans le champ
+`photo` de l'annonce, dans pub_meta.py. Si le recadrage tombe mal — une
+photo verticale dont le centre est le sol — ajuster le champ `cadrage` :
+0 garde le haut de l'image, 1 garde le bas, 0.5 est le centre.
+
+ATTENTION : ne jamais nommer la commune ni le client, et ne rien publier
+d'identifiable sans son accord ecrit (cahier des charges, section 15).
+
+Contenu
+-------
+chantier-renovation-cloisons.jpg   piece en renovation, ossature metallique,
+                                   plaques de platre, mur decape — publicite
+                                   AMO « Ne restez pas seul face aux
+                                   entreprises » (2026-09-21)

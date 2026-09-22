@@ -1,0 +1,17 @@
+DÉPOSEZ ICI LES PHOTOS À INTÉGRER AU SITE
+=========================================
+
+Pour la page « Maîtrise d'œuvre », deux photos sont attendues :
+
+  1. renovation.jpg  — un chantier de rénovation en cours
+  2. incendie.jpg    — des travaux de remise en état après incendie
+
+Le nom du fichier n'a pas d'importance, dites-moi simplement à quoi
+correspond chaque photo.
+
+Ce qui compte :
+  - format paysage de préférence (elles seront recadrées en 4/3)
+  - au moins 1200 pixels de large
+  - JPEG ou PNG, prises au téléphone sans problème
+
+Je m'occupe du recadrage, de la compression et de l'intégration.

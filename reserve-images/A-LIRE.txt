@@ -1,0 +1,12 @@
+Visuels retires du site mais conserves.
+
+moe-renovation-chantier.webp  chantier de renovation, deux compagnons au travail
+moe-incendie-chantier.webp    remise en etat apres incendie, deux compagnons
+moe-fissures.webp             fissures sur facade
+moe-humidite.webp             traces d'humidite sur un mur
+
+Ils illustraient la page Maitrise d'oeuvre, remplaces le 2026-09-03 par des
+mises en situation d'accompagnement (amo-*.webp).
+
+"fissures" et "humidite" correspondent a deux des dix expertises du cahier
+des charges : les reprendre au lot 5 en les recopiant dans site/assets/img/.

@@ -1,0 +1,528 @@
+<title>Formulaire instantané BTP Expertise</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+  :root {
+    --papier: #EDF2F7;
+    --surface: #FFFFFF;
+    --surface-2: #F6F9FC;
+    --encre: #1B2233;
+    --encre-2: #5A6982;
+    --trait: #C9D6E2;
+    --trait-fin: #DEE7EF;
+    --cyan: #0B8FBF;
+    --cyan-vif: #0BBBF6;
+    --orange: #E07600;
+    --orange-vif: #FF8A00;
+    --grille: rgba(27, 34, 51, .055);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papier: #10161F;
+      --surface: #171F2B;
+      --surface-2: #1D2733;
+      --encre: #E7EEF6;
+      --encre-2: #93A3B8;
+      --trait: #2C3947;
+      --trait-fin: #232E3B;
+      --cyan: #3DC6F2;
+      --cyan-vif: #0BBBF6;
+      --orange: #FF9E2E;
+      --orange-vif: #FF8A00;
+      --grille: rgba(231, 238, 246, .05);
+    }
+  }
+  :root[data-theme="dark"] {
+    --papier: #10161F;
+    --surface: #171F2B;
+    --surface-2: #1D2733;
+    --encre: #E7EEF6;
+    --encre-2: #93A3B8;
+    --trait: #2C3947;
+    --trait-fin: #232E3B;
+    --cyan: #3DC6F2;
+    --cyan-vif: #0BBBF6;
+    --orange: #FF9E2E;
+    --orange-vif: #FF8A00;
+    --grille: rgba(231, 238, 246, .05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding-block: 28px 72px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: var(--papier);
+    background-image:
+      linear-gradient(var(--grille) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grille) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--encre);
+    font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+
+  /* — Cartouche — */
+  .cartouche {
+    background: var(--surface);
+    border: 1.5px solid var(--encre);
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+  .cartouche__corps { padding: 22px 24px 20px; }
+  .cartouche__label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--cyan); margin: 0 0 8px;
+  }
+  .cartouche h1 {
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 700; font-size: clamp(1.6rem, 4.6vw, 2.15rem);
+    line-height: 1.1; margin: 0 0 10px; text-wrap: balance; letter-spacing: -.015em;
+  }
+  .cartouche p { margin: 0; color: var(--encre-2); max-width: 52ch; }
+  .cartouche__meta {
+    border-left: 1.5px solid var(--trait);
+    padding: 22px 22px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; white-space: nowrap;
+  }
+  .cartouche__meta dt { color: var(--encre-2); letter-spacing: .06em; text-transform: uppercase; font-size: 10px; margin-bottom: 2px; }
+  .cartouche__meta dd { margin: 0; font-weight: 500; }
+  .cartouche__meta div { margin: 0; }
+
+  /* — Avertissement — */
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--trait);
+    border-left: 4px solid var(--orange-vif);
+    padding: 16px 20px;
+  }
+  .note__titre {
+    font-family: "Archivo", system-ui, sans-serif; font-weight: 600;
+    font-size: 1rem; margin: 0 0 4px;
+  }
+  .note p { margin: 0; color: var(--encre-2); font-size: 15.5px; }
+  .note p + p { margin-top: 8px; }
+
+  /* — Section — */
+  .section__titre {
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 600; font-size: 1.02rem; letter-spacing: .04em; text-transform: uppercase;
+    margin: 0 0 2px; display: flex; align-items: baseline; gap: 10px;
+  }
+  .section__chapo { margin: 0 0 16px; color: var(--encre-2); font-size: 15.5px; max-width: 62ch; }
+
+  /* — Écran — */
+  .ecran { background: var(--surface); border: 1px solid var(--trait); }
+  .ecran + .ecran { margin-top: 14px; }
+  .ecran__tete {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 18px; border-bottom: 1px solid var(--trait-fin);
+    background: var(--surface-2);
+  }
+  .repere {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--orange-vif); color: #1B2233;
+    font-family: "Archivo", system-ui, sans-serif; font-weight: 700; font-size: 13px;
+    display: grid; place-items: center;
+  }
+  .ecran__nom {
+    font-family: "Archivo", system-ui, sans-serif; font-weight: 600; font-size: 1.02rem;
+  }
+  .ecran__chemin {
+    margin-left: auto; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; color: var(--encre-2); text-align: right;
+  }
+  .ecran__corps { padding: 6px 18px 16px; }
+
+  /* — Ligne champ → valeur — */
+  .champ { display: grid; grid-template-columns: 200px 1fr; gap: 4px 18px; padding: 12px 0; border-bottom: 1px dashed var(--trait-fin); }
+  .champ:last-child { border-bottom: 0; }
+  .champ__nom {
+    font-size: 13.5px; color: var(--encre-2); padding-top: 3px;
+    font-weight: 600; letter-spacing: .01em;
+  }
+  .champ__aide { grid-column: 2; font-size: 13.5px; color: var(--encre-2); font-style: italic; }
+  .champ--bloc { grid-template-columns: 1fr; }
+  .champ--bloc .champ__aide { grid-column: 1; }
+
+  .val {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13.5px; line-height: 1.55;
+    background: var(--surface-2); border: 1px solid var(--trait-fin);
+    padding: 7px 30px 7px 10px; margin: 0;
+    white-space: pre-wrap; word-break: break-word;
+    cursor: copy; position: relative; transition: border-color .15s, background .15s;
+  }
+  .val::after {
+    content: "⧉"; position: absolute; top: 5px; right: 8px;
+    color: var(--encre-2); font-size: 13px; opacity: .5;
+  }
+  .val:hover, .val:focus-visible { border-color: var(--cyan); background: var(--surface); }
+  .val:focus-visible { outline: 2px solid var(--cyan); outline-offset: 1px; }
+  .val.est-copie::after { content: "copié"; font-family: "Source Sans 3", sans-serif; font-size: 11px; color: var(--cyan); opacity: 1; }
+  .val + .val { margin-top: 6px; }
+
+  ul.options { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  ul.options li {
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px;
+    border: 1px solid var(--trait); padding: 4px 9px; background: var(--surface-2);
+    cursor: copy; transition: border-color .15s;
+  }
+  ul.options li:hover { border-color: var(--cyan); }
+  ul.options li.est-copie { border-color: var(--cyan); color: var(--cyan); }
+
+  .puces { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .puces li { position: relative; padding-left: 18px; font-size: 15.5px; }
+  .puces li::before {
+    content: ""; position: absolute; left: 0; top: .62em;
+    width: 7px; height: 7px; background: var(--cyan-vif);
+  }
+
+  .drapeau {
+    display: inline-block; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+    border: 1px solid var(--cyan); color: var(--cyan); padding: 1px 6px; vertical-align: 2px;
+  }
+  .drapeau--off { border-color: var(--trait); color: var(--encre-2); }
+
+  /* — Écarts avec le site — */
+  table.ecarts { width: 100%; border-collapse: collapse; font-size: 15px; }
+  table.ecarts th, table.ecarts td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--trait-fin); vertical-align: top; }
+  table.ecarts th {
+    font-family: "Archivo", system-ui, sans-serif; font-size: 12px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--encre-2);
+    border-bottom: 1px solid var(--trait);
+  }
+  table.ecarts td:first-child { font-weight: 600; width: 30%; }
+  table.ecarts td:last-child { color: var(--encre-2); }
+  .tableau-cadre { background: var(--surface); border: 1px solid var(--trait); padding: 4px 6px; overflow-x: auto; }
+
+  .suite { background: var(--surface); border: 1px solid var(--trait); padding: 18px 20px; }
+  .suite ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .suite li::marker { font-family: "IBM Plex Mono", monospace; color: var(--cyan); font-size: 13px; }
+
+  .pied {
+    font-size: 13.5px; color: var(--encre-2); text-align: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    border-top: 1px solid var(--trait); padding-top: 18px;
+  }
+
+  a { color: var(--cyan); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+  @media (max-width: 620px) {
+    .cartouche { grid-template-columns: 1fr; }
+    .cartouche__meta { border-left: 0; border-top: 1.5px solid var(--trait); flex-direction: row; flex-wrap: wrap; gap: 16px 28px; }
+    .champ { grid-template-columns: 1fr; }
+    .champ__aide { grid-column: 1; }
+    .ecran__chemin { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="page">
+
+  <header class="cartouche">
+    <div class="cartouche__corps">
+      <p class="cartouche__label">Meta Ads · Formulaire instantané</p>
+      <h1>Demande d'expertise 06/83</h1>
+      <p>Le formulaire du site, réduit à ce qu'un formulaire instantané Meta sait faire — sans perdre la qualification qui fait le tri entre une demande sérieuse et un clic curieux.</p>
+    </div>
+    <dl class="cartouche__meta">
+      <div><dt>Page</dt><dd>BTP Expertise</dd></div>
+      <div><dt>Type</dt><dd>Intention plus forte</dd></div>
+      <div><dt>Questions</dt><dd>4 + coordonnées</dd></div>
+      <div><dt>Version</dt><dd>v1 · 14.09.2026</dd></div>
+    </dl>
+  </header>
+
+  <div class="note">
+    <p class="note__titre">À saisir à la main dans Meta</p>
+    <p>L'API publicitaire ne crée pas les formulaires instantanés : ils se créent depuis la Page. Chemin : <strong>Suite Business</strong> → Page BTP Expertise → <strong>Outils de génération de prospects</strong> → <strong>Formulaires instantanés</strong> → <em>Créer</em>. Les valeurs ci-dessous se copient d'un clic.</p>
+    <p>Deux prérequis avant de pouvoir diffuser : la Page doit être rattachée à un compte publicitaire (elle ne l'est pas encore) et les <a href="https://www.facebook.com/legal/leadgen/tos">CGU Lead Ads</a> doivent être acceptées pour cette Page.</p>
+  </div>
+
+  <section>
+    <h2 class="section__titre">Réglages du formulaire</h2>
+    <p class="section__chapo">Trois réglages décident de la qualité de ce qui arrive. Ils se posent avant les écrans.</p>
+    <div class="ecran">
+      <div class="ecran__corps">
+        <div class="champ">
+          <div class="champ__nom">Nom du formulaire</div>
+          <div><p class="val">BTP Expertise — Demande d'expertise 06/83 — v1</p></div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Type de formulaire</div>
+          <div>
+            <p class="val">Intention plus forte</p>
+            <p class="champ__aide">Ajoute un écran de vérification avant l'envoi. Volume plus faible, mais ce sont des gens qui ont relu leur numéro — c'est exactement le remède au taux de transformation d'un formulaire « volume plus élevé ».</p>
+          </div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Partage</div>
+          <div>
+            <p class="val">Restreint</p>
+            <p class="champ__aide">Seule la personne à qui l'annonce est diffusée peut le remplir. Empêche le formulaire de circuler hors zone 06/83.</p>
+          </div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Langue</div>
+          <div><p class="val">Français (France)</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section__titre">Les cinq écrans</h2>
+    <p class="section__chapo">Dans l'ordre où Meta les présente à la personne qui clique.</p>
+
+    <article class="ecran">
+      <div class="ecran__tete">
+        <span class="repere">1</span>
+        <span class="ecran__nom">Introduction</span>
+        <span class="ecran__chemin">Contenu → Intro</span>
+      </div>
+      <div class="ecran__corps">
+        <div class="champ">
+          <div class="champ__nom">Image d'en-tête</div>
+          <div>
+            <p class="val">Image de l'annonce</p>
+            <p class="champ__aide">Garde la planche technique de l'annonce cliquée : la continuité visuelle réduit les abandons sur cet écran.</p>
+          </div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Titre <span class="drapeau">60 car. max</span></div>
+          <div><p class="val">Un regard technique indépendant sur votre bâtiment</p></div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Mise en page</div>
+          <div><p class="val">Liste à puces</p></div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Puces — quatre, dans cet ordre</div>
+          <div>
+            <p class="val">Fissures, humidité, malfaçons, litiges, avant achat</p>
+            <p class="val">Cabinet indépendant — Alpes-Maritimes et Var</p>
+            <p class="val">Constats, photographies et préconisations écrites</p>
+            <p class="val">Missions à partir de 590 € TTC, devis avant intervention</p>
+            <p class="champ__aide">La quatrième puce est le filtre principal : elle fait partir ceux qui cherchent un avis gratuit, avant qu'ils ne coûtent un prospect facturé.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="ecran">
+      <div class="ecran__tete">
+        <span class="repere">2</span>
+        <span class="ecran__nom">Questions</span>
+        <span class="ecran__chemin">Contenu → Questions</span>
+      </div>
+      <div class="ecran__corps">
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Q1 — Choix multiple</div>
+          <div>
+            <p class="val">Votre demande concerne :</p>
+            <ul class="options">
+              <li>Fissures</li>
+              <li>Humidité / infiltration</li>
+              <li>Malfaçons</li>
+              <li>Litige travaux</li>
+              <li>Expertise avant achat</li>
+              <li>Réception de travaux</li>
+              <li>Plomberie ou électricité</li>
+              <li>Accompagnement travaux</li>
+              <li>Autre</li>
+            </ul>
+            <p class="champ__aide">Les deux portes du site en une seule question : Meta ne sait pas afficher une liste conditionnelle. « Accompagnement travaux » est l'entrée AMO.</p>
+          </div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Q2 — Choix multiple</div>
+          <div>
+            <p class="val">Type de bien :</p>
+            <ul class="options">
+              <li>Appartement</li>
+              <li>Maison individuelle</li>
+              <li>Villa</li>
+              <li>Immeuble / copropriété</li>
+              <li>Local professionnel</li>
+              <li>Autre</li>
+            </ul>
+          </div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Q3 — Réponse courte</div>
+          <div>
+            <p class="val">Dans quelle ville se situe le bien ?</p>
+            <p class="champ__aide">Reprend « Ville du bien » du site. Sert de second filtre géographique : un bien hors 06/83 se repère avant le rappel.</p>
+          </div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Q4 — Choix multiple</div>
+          <div>
+            <p class="val">Où en êtes-vous ?</p>
+            <ul class="options">
+              <li>Intervention urgente</li>
+              <li>Dans les prochains jours</li>
+              <li>Dans le mois</li>
+              <li>Je me renseigne</li>
+            </ul>
+            <p class="champ__aide">Remplace la description libre du site, qu'on ne peut pas demander ici sans faire chuter le taux de complétion. Donne l'ordre de rappel : les deux premières réponses passent devant.</p>
+          </div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Coordonnées — pré-remplies par Meta</div>
+          <div>
+            <ul class="options">
+              <li>Prénom</li>
+              <li>Nom</li>
+              <li>Numéro de téléphone</li>
+              <li>E-mail</li>
+            </ul>
+            <p class="champ__aide">Le téléphone est le champ qui compte : le rappel se fait par téléphone, comme sur le site. Ne pas ajouter d'autres champs — chaque champ supplémentaire coûte des complétions.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="ecran">
+      <div class="ecran__tete">
+        <span class="repere">3</span>
+        <span class="ecran__nom">Confidentialité</span>
+        <span class="ecran__chemin">Contenu → Confidentialité</span>
+      </div>
+      <div class="ecran__corps">
+        <div class="champ">
+          <div class="champ__nom">Lien politique</div>
+          <div><p class="val">https://btpexpertise.fr/politique-de-confidentialite/</p></div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Texte du lien</div>
+          <div><p class="val">Politique de confidentialité</p></div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Mention de consentement personnalisée</div>
+          <div>
+            <p class="val">J'accepte que mes données soient utilisées par BTP Expertise pour être recontacté(e) au sujet de ma demande.</p>
+            <p class="champ__aide">Reprend mot pour mot la case du formulaire du site, pour que les deux canaux recueillent le même consentement.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="ecran">
+      <div class="ecran__tete">
+        <span class="repere">4</span>
+        <span class="ecran__nom">Vérification</span>
+        <span class="ecran__chemin">Automatique</span>
+      </div>
+      <div class="ecran__corps">
+        <div class="champ">
+          <div class="champ__nom">Rien à saisir</div>
+          <div>
+            <p class="champ__aide" style="font-style: normal;">Cet écran n'existe que parce que le formulaire est en « intention plus forte » : Meta affiche les réponses et demande de confirmer. C'est lui qui élimine les envois au doigt glissé.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="ecran">
+      <div class="ecran__tete">
+        <span class="repere">5</span>
+        <span class="ecran__nom">Fin</span>
+        <span class="ecran__chemin">Contenu → Écran de fin</span>
+      </div>
+      <div class="ecran__corps">
+        <div class="champ">
+          <div class="champ__nom">Titre <span class="drapeau">60 car. max</span></div>
+          <div><p class="val">Votre demande est enregistrée</p></div>
+        </div>
+        <div class="champ champ--bloc">
+          <div class="champ__nom">Description</div>
+          <div>
+            <p class="val">Mickael Rigaud vous rappelle sous 24 heures ouvrées pour cerner votre situation et vous indiquer la mission adaptée. Un devis précisant le périmètre est établi avant toute intervention.</p>
+          </div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Texte du bouton</div>
+          <div><p class="val">Appeler le cabinet</p></div>
+        </div>
+        <div class="champ">
+          <div class="champ__nom">Action du bouton</div>
+          <div>
+            <p class="val">+33 6 81 65 15 91</p>
+            <p class="champ__aide">Le bouton d'appel bat le lien vers le site : celui qui vient de remplir est chaud à cette seconde-là, pas dans deux heures.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section>
+    <h2 class="section__titre">Ce qui change par rapport au site</h2>
+    <p class="section__chapo">Quatre champs du formulaire de contact ne passent pas dans un formulaire instantané. Voilà où ils reviennent.</p>
+    <div class="tableau-cadre">
+      <table class="ecarts">
+        <thead>
+          <tr><th>Champ du site</th><th>Statut</th><th>Où il revient</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Photos et documents</td>
+            <td>Impossible</td>
+            <td>Meta n'accepte aucun envoi de fichier. Demandés au téléphone, puis par e-mail à contact@btpexpertise.fr.</td>
+          </tr>
+          <tr>
+            <td>Description de la situation</td>
+            <td>Retiré</td>
+            <td>Un pavé de texte à taper au pouce fait chuter la complétion. Remplacé par Q4 « Où en êtes-vous ? » ; le détail se recueille au rappel.</td>
+          </tr>
+          <tr>
+            <td>Créneau d'agenda</td>
+            <td>Retiré</td>
+            <td>Pas d'agenda dans un formulaire instantané. Le créneau se fixe pendant le rappel, ou le lien du site est envoyé en suivi.</td>
+          </tr>
+          <tr>
+            <td>Besoin puis demande</td>
+            <td>Fusionné</td>
+            <td>Meta n'a pas de liste conditionnelle : les deux métiers tiennent dans les neuf options de Q1.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section__titre">Une fois le formulaire enregistré</h2>
+    <div class="suite">
+      <ol>
+        <li>Relève des prospects : <strong>Suite Business → Centre de prospects</strong>. Sans branchement, rien n'arrive par e-mail — c'est la cause n°1 de prospects jamais rappelés.</li>
+        <li>Brancher l'alerte : Zapier <em>Facebook Lead Ads → Gmail</em> vers contact@btpexpertise.fr, avec les quatre réponses dans le corps du message.</li>
+        <li>Me donner l'identifiant du formulaire : je crée alors la campagne, l'ensemble de publicités et les trois annonces par l'API, en pause, prêtes à relire.</li>
+      </ol>
+    </div>
+  </section>
+
+  <p class="pied">BTP Expertise · 18 Place Masséna, 06000 Nice · 06 81 65 15 91 · btpexpertise.fr</p>
+</div>
+
+<script>
+  document.addEventListener("click", function (e) {
+    var cible = e.target.closest(".val, ul.options li");
+    if (!cible) return;
+    var texte = cible.textContent.trim();
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(texte).then(function () {
+      cible.classList.add("est-copie");
+      setTimeout(function () { cible.classList.remove("est-copie"); }, 1400);
+    }).catch(function () {});
+  });
+</script>

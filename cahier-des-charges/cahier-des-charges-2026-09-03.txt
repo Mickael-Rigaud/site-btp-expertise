@@ -1,0 +1,504 @@
+===== PAGE 1 =====
+Cahier des charges définitif — BTP Expertise
+Refonte du site internet — Document à transmettre à Élodie
+L'objectif de la refonte est de repositionner clairement BTP Expertise comme cabinet
+d'expertise bâtiment et d'Assistance à Maîtrise d'Ouvrage (AMO), avec une image
+technique, indépendante, premium et fortement ancrée dans l'expérience terrain.
+1. Logo
+Conserver le logo actuel
+Ne pas refaire l'identité graphique.
+Conserver :
+la loupe ;
+le bâtiment ;
+les couleurs bleu/orange ;
+le nom BTP EXPERTISE ;
+l'identité générale actuelle.
+Modification à effectuer
+Supprimer uniquement la mention relative à « Maître d'œuvre ».
+Nouvelle baseline :
+Prévoir les déclinaisons nécessaires : logo principal, version compacte, favicon et
+versions adaptées aux fonds clairs/sombres.
+2. Nouveau positionnement
+Supprimer partout :
+Remplacer par :
+EXPERTISE BÂTIMENT • AMO
+Expertise bâtiment & Maîtrise d'œuvre
+BTP EXPERTISE
+Expertise bâtiment & Assistance à Maîtrise d'Ouvrage
+===== PAGE 2 =====
+Toute l'organisation commerciale du site doit ensuite reposer sur deux besoins.
+J'AI UN PROBLÈME
+EXPERTISE BÂTIMENT
+Constater • Analyser • Préconiser
+J'AI UN PROJET
+ASSISTANCE À MAÎTRISE D'OUVRAGE
+Conseiller • Sécuriser • Accompagner
+3. Menu principal
+Nouvelle navigation :
+Accueil | Expertises | AMO | Honoraires | Le cabinet | Zones d'intervention |
+Rejoignez-nous | Contact
+Conserver séparément un bouton bien identifiable :
+Régler mon dossier
+Dans le menu, utiliser simplement AMO. Sur la page elle-même :
+4. Premier écran de l'accueil
+H1
+Accroche
+Un regard technique indépendant pour comprendre votre bâtiment, sécuriser
+vos travaux et défendre vos intérêts.
+Assistance à Maîtrise d'Ouvrage (AMO)
+Expertise bâtiment & Assistance à Maîtrise d'Ouvrage
+Expertise indépendante, conseil technique et accompagnement de vos travaux
+sur la Côte d'Azur.
+===== PAGE 3 =====
+Deux CTA
+J'ai besoin d'une expertise
+Je souhaite être accompagné dans mes travaux
+Le visiteur doit comprendre l'activité de BTP Expertise en quelques secondes.
+5. Présenter les deux métiers dès l'accueil
+J'ai un problème
+Expertise bâtiment
+Découvrir nos expertises →
+J'ai un projet
+Assistance à Maîtrise d'Ouvrage
+Découvrir notre accompagnement AMO →
+6. Page « Expertises »
+Créer une présentation claire des différentes missions.
+Visite technique & avis
+Analyse ponctuelle d'une problématique permettant au client d'obtenir un avis technique
+professionnel.
+Malfaçons & non-conformités
+Identification des défauts de mise en œuvre, anomalies apparentes et analyse au regard
+des prescriptions techniques applicables.
+Fissures & désordres
+Fissures, humidité, malfaçons, plomberie, électricité, litiges, réception ou projet
+d'acquisition : BTP Expertise analyse votre situation et vous apporte un regard
+technique indépendant.
+BTP Expertise vous accompagne dans la définition de votre projet, l'analyse des devis,
+le choix des entreprises, le déroulement des travaux et leur réception.
+===== PAGE 4 =====
+Observation, caractérisation et analyse des causes possibles des fissurations et désordres
+constatés.
+Humidité & infiltrations
+Recherche et analyse des phénomènes d'humidité, infiltrations, condensation, ventilation
+et de leurs origines probables.
+Plomberie & réseaux
+Analyse des alimentations, évacuations, installations sanitaires, fuites, défauts de mise en
+œuvre et désordres affectant les réseaux.
+Installations électriques
+Analyse des tableaux, protections, circuits, mise à la terre, défauts de mise en œuvre et
+anomalies apparentes.
+Ne pas présenter cette prestation comme un diagnostic électrique réglementaire.
+Expertise avant achat
+Analyse technique indépendante d'un appartement ou d'une maison avant acquisition.
+Malfaçons / litiges travaux / expertise amiable
+Constat et analyse technique dans le cadre d'un différend relatif à des travaux.
+Assistance à réception
+Accompagnement lors de la réception, identification des défauts apparents et assistance à
+la formulation des réserves.
+Réunion contradictoire
+Assistance technique du client lors d'une réunion avec les entreprises, experts ou autres
+parties concernées.
+7. Nouvelle page AMO
+Supprimer l'actuelle présentation Maîtrise d'œuvre.
+Nouveau H1 :
+Assistance à Maîtrise d'Ouvrage
+Un professionnel du bâtiment à vos côtés pour sécuriser votre projet de travaux.
+===== PAGE 5 =====
+Présenter les missions suivantes :
+Étude du projet
+Analyse des besoins, objectifs, contraintes et priorités.
+Définition des travaux
+Assistance dans la définition des prestations nécessaires.
+Consultation des entreprises
+Accompagnement dans la recherche et la consultation des professionnels.
+Analyse des devis
+Comparaison technique et financière des propositions.
+Aide au choix des entreprises
+Analyse des offres et conseil au maître d'ouvrage avant sa décision.
+Accompagnement pendant les travaux
+Visites sur site et observations techniques.
+Contrôle visuel de la qualité apparente
+Identification des anomalies apparentes et points nécessitant une attention particulière.
+Comptes rendus & conseils
+Synthèse des observations, points de vigilance et recommandations.
+Assistance à réception
+Accompagnement lors de la réception et assistance à la formulation des réserves.
+8. Bien délimiter le rôle de l'AMO
+Principe général :
+Le site ne doit pas présenter BTP Expertise comme assurant :
+la direction des travaux ;
+les ordres d'exécution aux entreprises ;
+les plans d'exécution ;
+BTP Expertise conseille et assiste le maître d'ouvrage. Le maître d'ouvrage reste
+décisionnaire et contracte directement avec les entreprises.
+===== PAGE 6 =====
+la direction de l'exécution ;
+une mission OPC ;
+la garantie des délais ;
+la garantie du budget final ;
+la garantie de bonne exécution des entreprises.
+Cela devra également être cohérent avec la RC Pro réellement souscrite.
+9. Nettoyer toutes les références à la maîtrise d'œuvre
+Élodie doit rechercher sur l'intégralité du site :
+Maîtrise d'œuvre
+Maître d'œuvre
+Direction des travaux
+Direction de l'exécution
+Pilotage des entreprises
+Coordination des entreprises
+Garantir la bonne réalisation
+Remplacer selon le contexte par :
+AMO
+Assistance
+Accompagnement
+Conseil
+Analyse
+Observation technique
+Visite technique
+Compte rendu
+Aide à la décision
+Assistance à réception
+Technique / SEO
+Effectuer une redirection 301 de l'ancienne URL /maitrise-doeuvre/  vers la nouvelle
+page AMO.
+10. Nouveau parcours client Expertise / AMO
+Créer le bloc graphique en deux colonnes que nous avons défini.
+===== PAGE 7 =====
+EXPERTISE BÂTIMENT ASSISTANCE À MAÎTRISE D'OUVRAGE
+01. Prise de contact & étude du dossier 01. Étude du projet
+02. Définition de la mission 02. Définition des travaux
+03. Intervention sur site 03. Consultation des entreprises
+04. Analyse technique 04. Analyse des devis
+05. Préconisations 05. Accompagnement des travaux
+06. Rapport d'expertise 06. Comptes rendus & conseils
+07. Restitution & accompagnement 07. Assistance à réception
+Expertise
+01 — Analyse de la problématique et des premiers documents.
+02 — Détermination du périmètre et des investigations nécessaires.
+03 — Constats, relevés, photographies et contrôles.
+04 — Analyse des désordres, de leurs causes et des référentiels applicables.
+05 — Solutions correctives et recommandations techniques.
+06 — Constats, analyses, conclusions et préconisations.
+07 — Présentation des conclusions et accompagnement dans les suites du dossier.
+AMO
+01 — Analyse des besoins, contraintes et objectifs.
+02 — Assistance dans la définition des prestations nécessaires.
+03 — Accompagnement dans la consultation des professionnels.
+04 — Comparaison technique et financière des propositions.
+05 — Visites sur site et observations techniques.
+06 — Points d'attention et recommandations au maître d'ouvrage.
+07 — Assistance lors de la réception et formulation des réserves.
+Consigne graphique
+Reprendre le visuel Expertise à gauche / AMO à droite que nous avions conçu, mais le
+reproduire directement dans le site en HTML/CSS pour conserver un affichage responsive
+et du texte indexable par Google.
+===== PAGE 8 =====
+11. Bloc « Indépendance »
+À positionner assez haut sur l'accueil :
+Si le modèle commercial est définitivement sans rémunération des entreprises :
+Cela constitue une vraie différenciation commerciale.
+12. Présentation de Mickael Rigaud / Le cabinet
+Remplacer le texte actuel par :
+Une expertise issue du terrain
+Un expert indépendant à vos côtés
+BTP Expertise vous apporte un regard technique objectif et vous accompagne
+dans vos décisions en toute indépendance vis-à-vis des entreprises
+intervenantes.
+BTP Expertise n'est pas rémunéré par les entreprises intervenant sur les projets
+de ses clients.
+BTP Expertise est un cabinet d'expertise en bâtiment et d'Assistance à Maîtrise
+d'Ouvrage (AMO), basé à Nice. Nous accompagnons particuliers et professionnels
+dans l'analyse des désordres du bâtiment ainsi que dans la sécurisation de leurs
+projets de travaux sur l'ensemble de la Côte d'Azur et plus largement en région
+Provence-Alpes-Côte d'Azur.
+Le cabinet a été fondé par Mickael Rigaud, expert en bâtiment issu du terrain et
+entrepreneur expérimenté dans le secteur de la rénovation.
+Titulaire de formations professionnelles en électricité, plomberie et maçonnerie, il a
+créé et dirigé une entreprise de rénovation tous corps d'état. Cette expérience
+opérationnelle lui a permis d'intervenir sur des projets faisant appel à de nombreux
+corps de métier et de développer une connaissance concrète des techniques de mise
+en œuvre, des problématiques de chantier, des malfaçons et des désordres
+pouvant affecter un bâtiment.
+Cette expérience du terrain constitue aujourd'hui le socle de l'approche de BTP
+Expertise : observer, comprendre et analyser avant de préconiser.
+Qu'il s'agisse d'identifier l'origine d'un désordre, d'évaluer la qualité de travaux réalisés
+ou d'accompagner un maître d'ouvrage dans son projet, notre objectif reste le même :
+===== PAGE 9 =====
+13. Quatre blocs de réassurance
+Ajouter :
+EXPÉRIENCE TERRAIN
+Une connaissance concrète des métiers, techniques et problématiques du bâtiment.
+INDÉPENDANCE
+Un regard objectif au service des intérêts du client.
+ANALYSE STRUCTURÉE
+Constats, photographies, analyses et préconisations selon la mission confiée.
+RÉACTIVITÉ
+Interventions sur Nice, Cannes, Antibes et plus largement sur la Côte d'Azur.
+14. « Nos outils d'expertise »
+Créer une section :
+Présenter uniquement les équipements réellement détenus et utilisés :
+Humidimètre
+Caméra thermique
+Télémètre laser
+Caméra/endoscope
+Détecteurs
+Appareils de mesure électrique
+Autres appareils de contrôle
+Utiliser autant que possible de vraies photographies du matériel et des interventions
+BTP Expertise.
+apporter un regard technique indépendant, compréhensible et directement
+exploitable pour permettre à nos clients de prendre les bonnes décisions.
+La technique au service de l'expertise
+===== PAGE 10 =====
+15. Ajouter des études de cas
+Créer progressivement une rubrique :
+Nos interventions
+Exemples :
+Appartement — Nice
+Malfaçons après rénovation.
+Villa — Antibes
+Fissures et désordres.
+Appartement — Cannes
+Expertise avant acquisition.
+Villa — Nice
+Accompagnement AMO d'une rénovation.
+Pour chaque dossier :
+Ne jamais publier d'éléments permettant d'identifier le client sans son autorisation.
+16. Nouvelle page « Honoraires »
+Positionnement retenu :
+Mission Honoraires à partir de
+Visite technique & avis oral 590 € TTC
+Expertise + compte rendu 790 € TTC
+Expertise + rapport détaillé 990 € TTC
+Expertise fissures 890 € TTC
+Humidité / infiltrations 790 € TTC
+Plomberie / réseaux 790 € TTC
+Installations électriques 790 € TTC
+Situation → Problématique → Mission → Observations → Préconisations /
+résultat
+===== PAGE 11 =====
+Mission Honoraires à partir de
+Avant achat appartement 790 € TTC
+Avant achat maison 990 € TTC
+Assistance réception 690 € TTC
+Malfaçons / litige travaux 990 € TTC
+Réunion contradictoire 990 € TTC
+Analyse de devis 390 € TTC
+AMO ponctuelle 590 € TTC
+AMO complète Sur devis
+Ajouter sous la grille :
+17. Déplacements
+Base proposée :
+18. Tarifs sur la page d'accueil
+Ne pas afficher toute la grille.
+Afficher seulement :
+Chaque mission étant différente, un devis précisant le périmètre d'intervention et
+les honoraires est établi avant toute intervention. Les tarifs indiqués constituent
+des tarifs de départ et peuvent évoluer en fonction de la nature du dossier, de sa
+complexité, de la superficie du bien, des investigations nécessaires et du volume
+documentaire à analyser.
+Déplacement inclus dans un rayon de 30 km autour de Nice. Au-delà, les
+éventuels frais de déplacement sont précisés dans le devis avant validation de la
+mission.
+Nos honoraires
+===== PAGE 12 =====
+Cela permet d'affirmer le positionnement tarifaire sans surcharger l'accueil.
+19. Tarification AMO
+Public
+AMO ponctuelle : à partir de 590 € TTC
+Accompagnement AMO : sur devis
+Calcul interne
+Pour les missions importantes, possibilité de travailler autour de 5 à 7 % HT du montant
+des travaux, avec un minimum de mission.
+Le devis devra néanmoins être établi en fonction :
+montant des travaux + durée du chantier + nombre de visites + complexité + niveau
+d'accompagnement demandé.
+Ne pas afficher pour l'instant un taux unique de 6 % sur le site.
+20. Formulaire de contact
+Le formulaire doit devenir un véritable outil de qualification.
+Votre besoin
+Expertise bâtiment
+Assistance à Maîtrise d'Ouvrage
+Votre problématique
+Fissures
+Humidité / infiltration
+Malfaçons / non-conformités
+Visite technique à partir de 590 € TTC
+Expertise avec rapport détaillé à partir de 990 € TTC
+AMO sur devis
+Consulter nos honoraires →
+===== PAGE 13 =====
+Plomberie
+Électricité
+Litige travaux
+Avant achat
+Réception
+Analyse de devis
+Accompagnement travaux
+Autre
+Informations
+Nom
+Téléphone
+Email
+Ville du bien
+Type de bien
+Description de la situation
+Pièces jointes
+Permettre l'envoi de :
+Photos • devis • factures • plans • courriers • rapports existants
+Ajouter :
+21. Page « Rejoignez-nous »
+Créer une nouvelle page :
+Rejoignez le réseau BTP Expertise
+Profils recherchés
+Experts bâtiment généralistes
+Ingénieurs structure
+Spécialistes fissures / structure
+Premier échange téléphonique sans engagement.
+BTP Expertise développe un réseau de professionnels indépendants spécialisés
+dans les différentes disciplines du bâtiment afin de mobiliser les compétences
+adaptées aux spécificités de chaque dossier.
+===== PAGE 14 =====
+Spécialistes humidité / étanchéité
+Thermiciens
+Économistes de la construction
+Spécialistes électricité
+Spécialistes plomberie
+Spécialistes couverture
+Spécialistes assainissement
+Autres spécialistes techniques
+Formulaire
+Nom
+Société
+SIRET
+Téléphone
+Email
+Spécialités
+Années d'expérience
+Départements d'intervention
+Qualifications
+RC Pro
+CV
+Message
+Employer systématiquement « réseau de professionnels indépendants » et ne pas
+laisser entendre qu'il s'agit de salariés de BTP Expertise.
+22. Organisation économique des indépendants
+INTERNE — ne pas publier sur le site
+Base de négociation :
+Situation Expert BTP Expertise
+Client apporté et dossier géré par BTP
+Expertise
+60 % 40 %
+Expert assure une part importante de la
+rédaction/gestion
+65–70 % 30–35 %
+Expert apporte lui-même le client 75–80 % 20–25 %
+===== PAGE 15 =====
+Cette grille n'est qu'une base commerciale.
+Prévoir ensuite un véritable contrat de partenariat/sous-traitance encadrant notamment
+assurances, responsabilité, confidentialité, relation client, rapports, utilisation de la marque
+et rémunération.
+23. Zones d'intervention
+Priorité :
+Nice • Cannes • Antibes
+Puis :
+Cagnes-sur-Mer • Saint-Laurent-du-Var • Villeneuve-Loubet • Mougins • Le Cannet •
+Vallauris • Grasse
+Conserver une couverture plus large Alpes-Maritimes / Var lorsque cela correspond
+réellement aux interventions du cabinet.
+24. SEO
+Requêtes principales
+Expert bâtiment Nice
+Expert bâtiment Cannes
+Expert bâtiment Antibes
+Expertise
+Expertise malfaçons Nice
+Expertise fissures Nice
+Expertise humidité Nice
+Expertise plomberie Nice
+Expertise électrique Nice
+Expertise avant achat Nice
+Assistance réception travaux Nice
+Litige artisan Nice
+AMO
+AMO Nice
+Assistance maîtrise d'ouvrage Nice
+===== PAGE 16 =====
+Accompagnement travaux Nice
+Analyse devis travaux Nice
+Déployer progressivement Cannes, Antibes et les autres communes.
+Éviter les dizaines de pages identiques où seul le nom de la ville change.
+25. « Honoraires » et « Régler mon dossier »
+Conserver les deux.
+HONORAIRES
+Pour informer les prospects.
+RÉGLER MON DOSSIER
+Pour les clients ayant déjà accepté une mission et devant procéder au paiement.
+26. Vérification RC Pro avant lancement
+Avant la mise en ligne définitive et surtout avant le lancement des campagnes Meta Ads,
+comparer les garanties du contrat avec toutes les prestations annoncées :
+Expertise bâtiment
+Malfaçons
+Fissures
+Humidité / infiltrations
+Plomberie
+Électricité
+Expertise avant achat
+Expertise amiable / litiges
+Réunion contradictoire
+Assistance à réception
+AMO
+Ajuster les formulations si le contrat d'assurance comporte des exclusions ou limitations.
+27. Architecture finale
+ACCUEIL
+===== PAGE 17 =====
+EXPERTISES
+↳  Visite technique & avis
+↳  Malfaçons & non-conformités
+↳  Fissures & désordres
+↳  Humidité & infiltrations
+↳  Plomberie & réseaux
+↳  Installations électriques
+↳  Expertise avant achat
+↳  Litiges / Expertise amiable
+↳  Assistance à réception
+↳  Réunion contradictoire
+AMO
+HONORAIRES
+LE CABINET
+ZONES D'INTERVENTION
+REJOIGNEZ-NOUS
+CONTACT
+RÉGLER MON DOSSIER
+28. Ordre de travail pour Élodie
+1. Logo → retirer uniquement « Maître d'œuvre » et mettre « Expertise bâtiment • AMO
+».
+2. Modifier le positionnement général Expertise + MOE → Expertise + AMO.
+3. Nettoyer toutes les anciennes mentions de maîtrise d'œuvre.
+4. Refaire le hero de l'accueil avec les deux entrées « J'ai un problème / J'ai un projet
+».
+5. Restructurer la page Expertises et ajouter plomberie + électricité.
+6. Transformer complètement la page Maîtrise d'œuvre en AMO.
+7. Créer le parcours graphique Expertise / AMO en deux colonnes.
+8. Remplacer la présentation de Mickael Rigaud par la nouvelle version.
+9. Ajouter les blocs Indépendance / Expérience terrain / Analyse structurée /
+Réactivité.
+10. Ajouter Nos outils d'expertise.
+===== PAGE 18 =====
+11. Créer la page Honoraires.
+12. Améliorer le formulaire de demande avec qualification et pièces jointes.
+13. Créer Rejoignez-nous.
+14. Préparer la rubrique Nos interventions / études de cas.
+15. Mettre en place la redirection 301 de la page MOE.
+16. Développer progressivement le SEO Nice → Cannes → Antibes.
+17. Vérifier l'ensemble des prestations avec la RC Pro avant campagnes publicitaires.
+Ligne directrice finale
+Tout le site doit pouvoir être résumé ainsi :
+C'est cette version que je considère désormais comme le cahier des charges définitif de
+BTP Expertise.
+J'ai un problème
+BTP Expertise constate, analyse et préconise.
+J'ai un projet
+BTP Expertise conseille, sécurise et accompagne.
+Dans les deux cas
+Un regard technique indépendant issu du terrain.

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --nuit: #262C42; --bleu: #0BBBF6; --orange: #FF8A00;
+    --texte: #3A3F52; --clair: #6B7186; --fond: #F4F4F4;
+    --bord: #E3E7ED; --blanc: #fff;
+    --ombre: 0 4px 20px rgba(38,44,66,.10);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fond); color: var(--texte);
+    font: 15px/1.6 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  h1, h2, h3 { color: var(--nuit); margin: 0; }
+  button { font: inherit; cursor: pointer; border: 0; }
+
+  /* ---------- Connexion ---------- */
+  .connexion {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .connexion__carte {
+    background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre);
+    padding: 40px; width: 100%; max-width: 380px; text-align: center;
+  }
+  .connexion__carte h1 { font-size: 1.3rem; margin-bottom: 6px; }
+  .connexion__carte p { color: var(--clair); font-size: .9rem; margin: 0 0 24px; }
+  .connexion input {
+    width: 100%; padding: 13px 15px; border: 1px solid var(--bord);
+    border-radius: 9px; font-size: 1rem; text-align: center; margin-bottom: 14px;
+  }
+  .connexion input:focus { outline: 0; border-color: var(--bleu); box-shadow: 0 0 0 3px rgba(11,187,246,.15); }
+
+  .btn {
+    background: var(--orange); color: #fff; padding: 12px 24px;
+    border-radius: 9px; font-weight: 600; transition: .2s;
+  }
+  .btn:hover { background: #E67B00; }
+  .btn--large { width: 100%; }
+  .btn--fantome { background: transparent; color: var(--nuit); border: 1px solid var(--bord); }
+  .btn--fantome:hover { background: var(--fond); color: var(--nuit); }
+  .btn--danger { background: transparent; color: #A32020; border: 1px solid #F0C4C4; }
+  .btn--danger:hover { background: #FDECEC; }
+  .btn--petit { padding: 8px 16px; font-size: .86rem; }
+
+  /* ---------- Structure ---------- */
+  .appli { display: none; }
+  .barre {
+    background: var(--nuit); color: #fff; padding: 16px 26px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .barre h1 { color: #fff; font-size: 1.05rem; letter-spacing: .02em; }
+  .barre h1 span { color: var(--orange); }
+  .barre__actions { display: flex; gap: 10px; align-items: center; }
+  .barre .btn--fantome { color: #fff; border-color: rgba(255,255,255,.3); }
+  .barre .btn--fantome:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+  .contenu { padding: 26px; max-width: 1400px; margin: 0 auto; }
+
+  /* ---------- Compteurs ---------- */
+  .compteurs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .compteur {
+    background: var(--blanc); border-radius: 12px; padding: 18px 20px; box-shadow: var(--ombre);
+    border-left: 4px solid var(--bord);
+  }
+  .compteur strong { display: block; font-size: 1.9rem; color: var(--nuit); line-height: 1.1; }
+  .compteur span { font-size: .8rem; color: var(--clair); text-transform: uppercase; letter-spacing: .06em; }
+  .compteur--attente { border-left-color: var(--orange); }
+  .compteur--cours { border-left-color: var(--bleu); }
+  .compteur--gagne { border-left-color: #21A65A; }
+
+  /* ---------- Filtres ---------- */
+  .filtres { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+  .filtres input {
+    flex: 1; min-width: 220px; padding: 11px 15px;
+    border: 1px solid var(--bord); border-radius: 9px; font-size: .95rem;
+  }
+  .filtres input:focus { outline: 0; border-color: var(--bleu); }
+  .puce {
+    padding: 8px 16px; border-radius: 30px; background: var(--blanc);
+    border: 1px solid var(--bord); font-size: .86rem; color: var(--texte); transition: .2s;
+  }
+  .puce:hover { border-color: var(--bleu); }
+  .puce[data-actif="true"] { background: var(--nuit); color: #fff; border-color: var(--nuit); }
+
+  /* ---------- Liste ---------- */
+  .liste { display: grid; gap: 12px; }
+  .demande {
+    background: var(--blanc); border-radius: 12px; box-shadow: var(--ombre);
+    padding: 18px 22px; display: grid;
+    grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+    cursor: pointer; transition: .2s; border-left: 4px solid var(--bord);
+  }
+  .demande:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(38,44,66,.16); }
+  .demande[data-statut="À traiter"] { border-left-color: var(--orange); }
+  .demande[data-statut="En cours"] { border-left-color: var(--bleu); }
+  .demande[data-statut="Devis envoyé"] { border-left-color: #8B5CF6; }
+  .demande[data-statut="Gagné"] { border-left-color: #21A65A; }
+  .demande[data-statut="Perdu"] { border-left-color: #C4C9D2; opacity: .72; }
+
+  .demande__titre { font-weight: 700; color: var(--nuit); font-size: 1.02rem; }
+  .demande__meta { font-size: .86rem; color: var(--clair); margin-top: 2px; }
+  .demande__extrait {
+    font-size: .88rem; color: var(--texte); margin-top: 8px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .demande__droite { text-align: right; display: grid; gap: 8px; justify-items: end; }
+  .etiquette {
+    font-size: .74rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    padding: 5px 11px; border-radius: 20px; white-space: nowrap;
+  }
+  .etiquette[data-statut="À traiter"] { background: #FFF1DE; color: #B35F00; }
+  .etiquette[data-statut="En cours"] { background: #E1F6FE; color: #06759B; }
+  .etiquette[data-statut="Devis envoyé"] { background: #F0E9FE; color: #6B34D6; }
+  .etiquette[data-statut="Gagné"] { background: #E4F7EC; color: #157A41; }
+  .etiquette[data-statut="Perdu"] { background: #EEF0F3; color: #6B7186; }
+  .compte-photos { font-size: .78rem; color: var(--clair); }
+
+  .vide { text-align: center; padding: 60px 20px; color: var(--clair); }
+
+  /* ---------- Fiche ---------- */
+  .voile {
+    display: none; position: fixed; inset: 0; background: rgba(27,32,51,.55);
+    z-index: 40; padding: 20px; overflow-y: auto;
+  }
+  .voile[data-ouvert="true"] { display: block; }
+  .fiche {
+    background: var(--blanc); border-radius: 16px; max-width: 720px;
+    margin: 30px auto; box-shadow: 0 24px 60px rgba(0,0,0,.3); overflow: hidden;
+  }
+  .fiche__entete {
+    background: var(--nuit); color: #fff; padding: 22px 26px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  }
+  .fiche__entete h2 { color: #fff; font-size: 1.15rem; }
+  .fiche__entete p { margin: 4px 0 0; color: rgba(255,255,255,.7); font-size: .86rem; }
+  .fermer {
+    background: rgba(255,255,255,.15); color: #fff; width: 34px; height: 34px;
+    border-radius: 50%; font-size: 1.2rem; line-height: 1; flex-shrink: 0;
+  }
+  .fermer:hover { background: rgba(255,255,255,.3); }
+  .fiche__corps { padding: 26px; }
+  .fiche__bloc { margin-bottom: 24px; }
+  .fiche__bloc h3 {
+    font-size: .74rem; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--clair); margin-bottom: 10px;
+  }
+  .infos { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .info { background: var(--fond); border-radius: 9px; padding: 11px 14px; }
+  .info dt { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--clair); }
+  .info dd { margin: 2px 0 0; font-weight: 600; color: var(--nuit); font-size: .93rem; word-break: break-word; }
+  .info a { color: var(--nuit); text-decoration: none; }
+  .info a:hover { color: var(--orange); }
+
+  .description {
+    background: var(--fond); border-radius: 9px; padding: 16px 18px;
+    white-space: pre-wrap; font-size: .95rem;
+  }
+  .galerie { display: flex; flex-wrap: wrap; gap: 10px; }
+  .galerie img {
+    width: 108px; height: 108px; object-fit: cover; border-radius: 9px;
+    border: 1px solid var(--bord); cursor: zoom-in; background: var(--fond);
+  }
+  .galerie__attente { color: var(--clair); font-size: .88rem; }
+
+  .fiche__statuts { display: flex; flex-wrap: wrap; gap: 8px; }
+  textarea {
+    width: 100%; min-height: 90px; padding: 12px 14px; border: 1px solid var(--bord);
+    border-radius: 9px; font: inherit; font-size: .93rem; resize: vertical;
+  }
+  textarea:focus { outline: 0; border-color: var(--bleu); }
+  .fiche__pied {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: space-between;
+    padding: 18px 26px; background: var(--fond); border-top: 1px solid var(--bord);
+  }
+  .fiche__pied .groupe { display: flex; gap: 10px; flex-wrap: wrap; }
+  a.btn { text-decoration: none; display: inline-block; }
+
+  .agrandissement {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9);
+    z-index: 60; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out;
+  }
+  .agrandissement[data-ouvert="true"] { display: flex; }
+  .agrandissement img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+
+  .info-flash {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--nuit); color: #fff; padding: 12px 22px; border-radius: 30px;
+    font-size: .9rem; z-index: 80; transition: transform .3s; box-shadow: 0 8px 26px rgba(0,0,0,.3);
+  }
+  .info-flash[data-visible="true"] { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 620px) {
+    .contenu { padding: 16px; }
+    .demande { grid-template-columns: 1fr; }
+    .demande__droite { text-align: left; justify-items: start; }
+    .fiche { margin: 0; border-radius: 12px; }
+    .fiche__pied { flex-direction: column; }
+    .fiche__pied .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ---------------- Connexion ---------------- -->
+<div class="connexion" id="ecran-connexion">
+  <div class="connexion__carte">
+    <h1>BTP <span style="color:#FF8A00">Expertise</span></h1>
+    <p>Espace de gestion des demandes</p>
+    <input type="password" id="champ-code" placeholder="Code d'accès" autocomplete="current-password">
+    <button class="btn btn--large" id="btn-entrer">Entrer</button>
+    <p id="erreur-connexion" style="color:#A32020;margin:14px 0 0;display:none">Code incorrect</p>
+  </div>
+</div>
+
+<!-- ---------------- Application ---------------- -->
+<div class="appli" id="appli">
+  <div class="barre">
+    <h1>BTP <span>Expertise</span> — Demandes</h1>
+    <div class="barre__actions">
+      <button class="btn btn--fantome btn--petit" id="btn-actualiser">Actualiser</button>
+      <button class="btn btn--fantome btn--petit" id="btn-sortir">Quitter</button>
+    </div>
+  </div>
+
+  <div class="contenu">
+    <div class="compteurs" id="compteurs"></div>
+
+    <div class="filtres">
+      <input type="search" id="recherche" placeholder="Rechercher un nom, une ville, un mot…">
+      <button class="puce" data-filtre="tous" data-actif="true">Toutes</button>
+      <button class="puce" data-filtre="À traiter">À traiter</button>
+      <button class="puce" data-filtre="En cours">En cours</button>
+      <button class="puce" data-filtre="Devis envoyé">Devis envoyé</button>
+      <button class="puce" data-filtre="Gagné">Gagné</button>
+      <button class="puce" data-filtre="Perdu">Perdu</button>
+    </div>
+
+    <div class="liste" id="liste"></div>
+  </div>
+</div>
+
+<!-- ---------------- Fiche détaillée ---------------- -->
+<div class="voile" id="voile">
+  <div class="fiche" id="fiche"></div>
+</div>
+
+<div class="agrandissement" id="agrandissement"><img id="image-agrandie" alt=""></div>
+<div class="info-flash" id="flash"></div>
+
+<script>
+/* ------------------------------------------------------------------
+   APERCU LOCAL — remplace google.script.run par des donnees fictives.
+   Sert uniquement a montrer l'interface ; non utilise en production.
+   Code d'acces : demo
+   ------------------------------------------------------------------ */
+(function () {
+  var CODE = "demo";
+  var DONNEES = [
+    { ligne: 2, date: new Date(Date.now() - 3600e3 * 5).toISOString(),
+      type: "Avis technique", objet: "Fissures et désordres structurels",
+      nom: "Bonnet", prenom: "Sophie", email: "sophie.bonnet@example.fr",
+      telephone: "06 12 34 56 78", ville: "Draguignan",
+      description: "Fissure en escalier sur la façade sud, apparue après l'été. Elle traverse le mur et se voit aussi depuis l'intérieur du salon. Maison de 1978, terrain argileux.",
+      photos: [{id: "p1", nom: "facade-sud.jpg"}, {id: "p2", nom: "interieur-salon.jpg"}],
+      consentement: "Oui", statut: "À traiter", note: "" },
+    { ligne: 3, date: new Date(Date.now() - 3600e3 * 30).toISOString(),
+      type: "Réception de travaux", objet: "Réception de chantier",
+      nom: "Aloui", prenom: "Karim", email: "k.aloui@example.fr",
+      telephone: "07 88 55 22 11", ville: "Cannes",
+      description: "Réception d'une rénovation complète d'appartement prévue vendredi prochain. Je souhaite être accompagné pour poser les réserves.",
+      photos: [{id: "p3", nom: "sejour.jpg"}],
+      consentement: "Oui", statut: "En cours",
+      note: "Appelé le 22/08, rendez-vous fixé vendredi 14h sur place." },
+    { ligne: 4, date: new Date(Date.now() - 3600e3 * 74).toISOString(),
+      type: "Expertise avant achat immobilier", objet: "Achat immobilier",
+      nom: "Perrin", prenom: "Élise", email: "elise.perrin@example.fr",
+      telephone: "06 45 78 90 12", ville: "Antibes",
+      description: "Compromis prévu dans dix jours sur une villa des années 90. Traces d'humidité en sous-sol et toiture-terrasse jamais refaite.",
+      photos: [], consentement: "Oui", statut: "Devis envoyé",
+      note: "Devis envoyé le 21/08. Relancer lundi." },
+    { ligne: 5, date: new Date(Date.now() - 3600e3 * 190).toISOString(),
+      type: "Recherche de malfaçons", objet: "Malfaçons et non-conformités",
+      nom: "Ferrand", prenom: "Marc", email: "m.ferrand@example.fr",
+      telephone: "06 33 21 45 67", ville: "Toulon",
+      description: "Carrelage posé de travers dans toute la pièce de vie, joints irréguliers. L'entreprise refuse de reprendre.",
+      photos: [], consentement: "Oui", statut: "Gagné",
+      note: "Rapport remis. Règlement reçu." }
+  ];
+
+  function vignette(texte, couleur) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">' +
+      '<rect width="300" height="300" fill="' + couleur + '"/>' +
+      '<text x="150" y="158" font-family="sans-serif" font-size="19" fill="#fff" ' +
+      'text-anchor="middle">' + texte + '</text></svg>';
+    return "data:image/svg+xml;base64," + btoa(svg);
+  }
+  var IMAGES = {
+    p1: vignette("facade sud", "#8a7a66"),
+    p2: vignette("salon", "#5b6472"),
+    p3: vignette("sejour", "#7a8a66")
+  };
+
+  function nouvelAppel() {
+    var succes = null, echec = null;
+    var api = {
+      withSuccessHandler: function (f) { succes = f; return api; },
+      withFailureHandler: function (f) { echec = f; return api; },
+      apiListe: function (code) {
+        setTimeout(function () {
+          if (code !== CODE) { if (echec) echec(new Error("code")); return; }
+          succes(JSON.parse(JSON.stringify(DONNEES)));
+        }, 250);
+      },
+      apiStatut: function (c, ligne, statut) {
+        setTimeout(function () {
+          DONNEES.forEach(function (d) { if (d.ligne === ligne) d.statut = statut; });
+          succes(true);
+        }, 150);
+      },
+      apiNote: function (c, ligne, note) {
+        setTimeout(function () {
+          DONNEES.forEach(function (d) { if (d.ligne === ligne) d.note = note; });
+          succes(true);
+        }, 150);
+      },
+      apiSupprimer: function (c, ligne) {
+        setTimeout(function () {
+          for (var i = 0; i < DONNEES.length; i++) {
+            if (DONNEES[i].ligne === ligne) { DONNEES.splice(i, 1); break; }
+          }
+          succes(true);
+        }, 150);
+      },
+      apiVignette: function (c, id) { setTimeout(function () { succes(IMAGES[id] || ""); }, 320); },
+      apiPhoto: function (c, id) { setTimeout(function () { succes(IMAGES[id] || ""); }, 320); }
+    };
+    return api;
+  }
+
+  window.google = { script: {} };
+  Object.defineProperty(window.google.script, "run", { get: nouvelAppel });
+})();
+</script>
+<script>
+  var CODE = "";
+  var DEMANDES = [];
+  var FILTRE = "tous";
+  var RECHERCHE = "";
+  var STATUTS = ["À traiter", "En cours", "Devis envoyé", "Gagné", "Perdu"];
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function flash(texte) {
+    var f = $("flash");
+    f.textContent = texte;
+    f.setAttribute("data-visible", "true");
+    clearTimeout(f._t);
+    f._t = setTimeout(function () { f.setAttribute("data-visible", "false"); }, 2600);
+  }
+
+  /* ---------------- Connexion ---------------- */
+  function entrer() {
+    var code = $("champ-code").value.trim();
+    if (!code) return;
+    $("btn-entrer").disabled = true;
+    $("btn-entrer").textContent = "Vérification…";
+
+    google.script.run
+      .withSuccessHandler(function (liste) {
+        CODE = code;
+        try { sessionStorage.setItem("codeBtp", code); } catch (e) {}
+        DEMANDES = liste;
+        $("ecran-connexion").style.display = "none";
+        $("appli").style.display = "block";
+        dessiner();
+      })
+      .withFailureHandler(function () {
+        $("erreur-connexion").style.display = "block";
+        $("btn-entrer").disabled = false;
+        $("btn-entrer").textContent = "Entrer";
+      })
+      .apiListe(code);
+  }
+
+  $("btn-entrer").addEventListener("click", entrer);
+  $("champ-code").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") entrer();
+  });
+
+  $("btn-sortir").addEventListener("click", function () {
+    try { sessionStorage.removeItem("codeBtp"); } catch (e) {}
+    location.reload();
+  });
+
+  $("btn-actualiser").addEventListener("click", function () {
+    charger(true);
+  });
+
+  function charger(avecMessage) {
+    google.script.run
+      .withSuccessHandler(function (liste) {
+        DEMANDES = liste;
+        dessiner();
+        if (avecMessage) flash("Liste à jour — " + liste.length + " demande(s)");
+      })
+      .withFailureHandler(function () { flash("Impossible de charger les demandes"); })
+      .apiListe(CODE);
+  }
+
+  /* ---------------- Affichage de la liste ---------------- */
+  function formatDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return "";
+    var jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+    var mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+                "août", "septembre", "octobre", "novembre", "décembre"];
+    return jours[d.getDay()] + " " + d.getDate() + " " + mois[d.getMonth()] +
+           " à " + ("0" + d.getHours()).slice(-2) + "h" + ("0" + d.getMinutes()).slice(-2);
+  }
+
+  function echapper(t) {
+    return String(t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function filtrees() {
+    var mots = RECHERCHE.toLowerCase().trim();
+    return DEMANDES.filter(function (d) {
+      if (FILTRE !== "tous" && d.statut !== FILTRE) return false;
+      if (!mots) return true;
+      var champ = [d.nom, d.prenom, d.ville, d.email, d.telephone,
+                   d.type, d.objet, d.description, d.note].join(" ").toLowerCase();
+      return champ.indexOf(mots) !== -1;
+    });
+  }
+
+  function dessiner() {
+    var parStatut = {};
+    STATUTS.forEach(function (s) { parStatut[s] = 0; });
+    DEMANDES.forEach(function (d) {
+      if (parStatut[d.statut] === undefined) parStatut[d.statut] = 0;
+      parStatut[d.statut]++;
+    });
+
+    $("compteurs").innerHTML =
+      compteur("Total", DEMANDES.length, "") +
+      compteur("À traiter", parStatut["À traiter"], "attente") +
+      compteur("En cours", parStatut["En cours"], "cours") +
+      compteur("Devis envoyé", parStatut["Devis envoyé"], "") +
+      compteur("Gagné", parStatut["Gagné"], "gagne");
+
+    var liste = filtrees();
+    if (!liste.length) {
+      $("liste").innerHTML =
+        '<div class="vide">' +
+        (DEMANDES.length ? "Aucune demande ne correspond à ce filtre."
+                         : "Aucune demande pour le moment.") + "</div>";
+      return;
+    }
+
+    $("liste").innerHTML = liste.map(function (d) {
+      var nb = d.photos ? d.photos.length : 0;
+      return '<div class="demande" data-statut="' + echapper(d.statut) + '" data-ligne="' + d.ligne + '">' +
+        "<div>" +
+          '<div class="demande__titre">' + echapper((d.prenom + " " + d.nom).trim()) +
+            (d.ville ? ' <span style="font-weight:400;color:#6B7186">— ' + echapper(d.ville) + "</span>" : "") +
+          "</div>" +
+          '<div class="demande__meta">' + formatDate(d.date) +
+            (d.type ? " · " + echapper(d.type) : "") + "</div>" +
+          '<div class="demande__extrait">' + echapper(d.description) + "</div>" +
+        "</div>" +
+        '<div class="demande__droite">' +
+          '<span class="etiquette" data-statut="' + echapper(d.statut) + '">' + echapper(d.statut) + "</span>" +
+          (nb ? '<span class="compte-photos">' + nb + " photo" + (nb > 1 ? "s" : "") + "</span>" : "") +
+        "</div>" +
+      "</div>";
+    }).join("");
+
+    [].forEach.call(document.querySelectorAll(".demande"), function (el) {
+      el.addEventListener("click", function () {
+        ouvrirFiche(parseInt(el.getAttribute("data-ligne"), 10));
+      });
+    });
+  }
+
+  function compteur(titre, valeur, variante) {
+    return '<div class="compteur' + (variante ? " compteur--" + variante : "") + '">' +
+      "<strong>" + (valeur || 0) + "</strong><span>" + titre + "</span></div>";
+  }
+
+  document.querySelectorAll(".puce").forEach(function (p) {
+    p.addEventListener("click", function () {
+      document.querySelectorAll(".puce").forEach(function (a) { a.setAttribute("data-actif", "false"); });
+      p.setAttribute("data-actif", "true");
+      FILTRE = p.getAttribute("data-filtre");
+      dessiner();
+    });
+  });
+
+  $("recherche").addEventListener("input", function (e) {
+    RECHERCHE = e.target.value;
+    dessiner();
+  });
+
+  /* ---------------- Fiche détaillée ---------------- */
+  function ouvrirFiche(ligne) {
+    var d = DEMANDES.filter(function (x) { return x.ligne === ligne; })[0];
+    if (!d) return;
+
+    var tel = (d.telephone || "").replace(/\s/g, "");
+    var objetMail = encodeURIComponent("Votre demande d'expertise — BTP Expertise");
+
+    $("fiche").innerHTML =
+      '<div class="fiche__entete">' +
+        "<div>" +
+          "<h2>" + echapper((d.prenom + " " + d.nom).trim()) + "</h2>" +
+          "<p>" + formatDate(d.date) + (d.ville ? " · " + echapper(d.ville) : "") + "</p>" +
+        "</div>" +
+        '<button class="fermer" id="btn-fermer" aria-label="Fermer">×</button>' +
+      "</div>" +
+
+      '<div class="fiche__corps">' +
+        '<div class="fiche__bloc">' +
+          "<h3>Coordonnées</h3>" +
+          '<dl class="infos">' +
+            info("E-mail", '<a href="mailto:' + echapper(d.email) + '">' + echapper(d.email) + "</a>") +
+            info("Téléphone", '<a href="tel:' + echapper(tel) + '">' + echapper(d.telephone) + "</a>") +
+            info("Ville du bien", echapper(d.ville)) +
+            info("Consentement", echapper(d.consentement)) +
+          "</dl>" +
+        "</div>" +
+
+        '<div class="fiche__bloc">' +
+          "<h3>Demande</h3>" +
+          '<dl class="infos">' +
+            info("Type", echapper(d.type)) +
+            info("Objet", echapper(d.objet)) +
+          "</dl>" +
+        "</div>" +
+
+        '<div class="fiche__bloc">' +
+          "<h3>Description du problème</h3>" +
+          '<div class="description">' + echapper(d.description) + "</div>" +
+        "</div>" +
+
+        '<div class="fiche__bloc">' +
+          "<h3>Photos</h3>" +
+          '<div class="galerie" id="galerie">' +
+            (d.photos && d.photos.length
+              ? '<span class="galerie__attente">Chargement des photos…</span>'
+              : '<span class="galerie__attente">Aucune photo jointe</span>') +
+          "</div>" +
+        "</div>" +
+
+        '<div class="fiche__bloc">' +
+          "<h3>Statut</h3>" +
+          '<div class="fiche__statuts" id="statuts">' +
+            STATUTS.map(function (s) {
+              return '<button class="puce" data-statut="' + s + '" data-actif="' +
+                     (s === d.statut) + '">' + s + "</button>";
+            }).join("") +
+          "</div>" +
+        "</div>" +
+
+        '<div class="fiche__bloc">' +
+          "<h3>Note interne</h3>" +
+          '<textarea id="note" placeholder="Compte rendu d\'appel, devis envoyé, rendez-vous fixé…">' +
+            echapper(d.note) + "</textarea>" +
+          '<button class="btn btn--fantome btn--petit" id="btn-note" style="margin-top:10px">Enregistrer la note</button>' +
+        "</div>" +
+      "</div>" +
+
+      '<div class="fiche__pied">' +
+        '<div class="groupe">' +
+          '<a class="btn" href="mailto:' + echapper(d.email) + "?subject=" + objetMail + '">Répondre par e-mail</a>' +
+          '<a class="btn btn--fantome" href="tel:' + echapper(tel) + '">Appeler</a>' +
+        "</div>" +
+        '<button class="btn btn--danger btn--petit" id="btn-supprimer">Supprimer</button>' +
+      "</div>";
+
+    $("voile").setAttribute("data-ouvert", "true");
+    document.body.style.overflow = "hidden";
+
+    $("btn-fermer").addEventListener("click", fermerFiche);
+
+    document.querySelectorAll("#statuts .puce").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var statut = b.getAttribute("data-statut");
+        document.querySelectorAll("#statuts .puce").forEach(function (a) {
+          a.setAttribute("data-actif", "false");
+        });
+        b.setAttribute("data-actif", "true");
+        google.script.run
+          .withSuccessHandler(function () {
+            d.statut = statut;
+            dessiner();
+            flash("Statut : " + statut);
+          })
+          .withFailureHandler(function () { flash("Échec de la mise à jour"); })
+          .apiStatut(CODE, d.ligne, statut);
+      });
+    });
+
+    $("btn-note").addEventListener("click", function () {
+      var note = $("note").value;
+      $("btn-note").disabled = true;
+      google.script.run
+        .withSuccessHandler(function () {
+          d.note = note;
+          $("btn-note").disabled = false;
+          flash("Note enregistrée");
+        })
+        .withFailureHandler(function () {
+          $("btn-note").disabled = false;
+          flash("Échec de l'enregistrement");
+        })
+        .apiNote(CODE, d.ligne, note);
+    });
+
+    $("btn-supprimer").addEventListener("click", function () {
+      if (!confirm("Supprimer définitivement cette demande ?")) return;
+      google.script.run
+        .withSuccessHandler(function () {
+          fermerFiche();
+          charger(false);
+          flash("Demande supprimée");
+        })
+        .withFailureHandler(function () { flash("Échec de la suppression"); })
+        .apiSupprimer(CODE, d.ligne);
+    });
+
+    if (d.photos && d.photos.length) chargerPhotos(d.photos);
+  }
+
+  function chargerPhotos(photos) {
+    var galerie = $("galerie");
+    galerie.innerHTML = "";
+    photos.forEach(function (p) {
+      google.script.run
+        .withSuccessHandler(function (source) {
+          if (!source) return;
+          var img = document.createElement("img");
+          img.src = source;
+          img.alt = p.nom;
+          img.title = p.nom;
+          img.addEventListener("click", function () {
+            $("image-agrandie").src = source;
+            $("agrandissement").setAttribute("data-ouvert", "true");
+            google.script.run
+              .withSuccessHandler(function (grande) {
+                if (grande) $("image-agrandie").src = grande;
+              })
+              .apiPhoto(CODE, p.id);
+          });
+          galerie.appendChild(img);
+        })
+        .apiVignette(CODE, p.id);
+    });
+  }
+
+  function info(intitule, valeur) {
+    return '<div class="info"><dt>' + intitule + "</dt><dd>" + (valeur || "—") + "</dd></div>";
+  }
+
+  function fermerFiche() {
+    $("voile").setAttribute("data-ouvert", "false");
+    document.body.style.overflow = "";
+  }
+
+  $("voile").addEventListener("click", function (e) {
+    if (e.target === $("voile")) fermerFiche();
+  });
+  $("agrandissement").addEventListener("click", function () {
+    $("agrandissement").setAttribute("data-ouvert", "false");
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if ($("agrandissement").getAttribute("data-ouvert") === "true") {
+      $("agrandissement").setAttribute("data-ouvert", "false");
+    } else {
+      fermerFiche();
+    }
+  });
+
+  /* Reconnexion automatique le temps de la session du navigateur */
+  (function () {
+    var memorise = null;
+    try { memorise = sessionStorage.getItem("codeBtp"); } catch (e) {}
+    if (memorise) {
+      $("champ-code").value = memorise;
+      entrer();
+    }
+  })();
+</script>
+</body>
+</html>

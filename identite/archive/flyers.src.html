@@ -1,0 +1,616 @@
+<title>Flyers BTP Expertise</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  *{box-sizing:border-box;}
+  :root{
+    --marine:#262C42;
+    --marine-deep:#1B2033;
+    --cyan:#0BBBF6;
+    --orange:#FF8A00;
+    --papier:#FFFFFF;
+
+    --ink:#1F2433;
+    --ink-soft:#5C6377;
+    --ground:#EDEEF2;
+    --panel:#FFFFFF;
+    --line:#D6D9E2;
+    --accent:#0B6FA8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#E7E9F0; --ink-soft:#9AA1B4; --ground:#14171F;
+      --panel:#1C202B; --line:#2E3443; --accent:#4FC3F7;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#E7E9F0; --ink-soft:#9AA1B4; --ground:#14171F;
+    --panel:#1C202B; --line:#2E3443; --accent:#4FC3F7;
+  }
+
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+    padding-block:40px 56px;padding-left:20px;padding-right:20px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:34px;}
+
+  header h1{
+    font-family:"Archivo","Segoe UI",system-ui,sans-serif;
+    font-weight:800;font-size:22px;letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance;
+  }
+  header p{margin:0;color:var(--ink-soft);font-size:14px;max-width:64ch;line-height:1.5;}
+
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .btn{
+    font:inherit;font-size:13px;font-weight:500;
+    background:var(--panel);color:var(--ink);
+    border:1px solid var(--line);border-radius:999px;padding:8px 15px;cursor:pointer;
+  }
+  .btn[aria-pressed="true"]{background:var(--marine);border-color:var(--marine);color:#fff;}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin:0;max-width:72ch;line-height:1.5;}
+
+  .flyer{display:flex;flex-direction:column;gap:12px;}
+  .flyer > h2{
+    font-family:"Archivo",sans-serif;font-size:12px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;margin:0;color:var(--ink-soft);
+  }
+  .flyer > h2 em{font-style:normal;color:var(--orange);}
+  .pair{display:flex;flex-wrap:wrap;gap:24px;}
+  figure{margin:0;display:flex;flex-direction:column;gap:8px;}
+  figcaption{
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;
+  }
+
+  /* ---- La page : A5 148 x 210 mm (+ fond perdu) ---- */
+  .page{
+    --bleed:3em;
+    position:relative;
+    font-size:1mm;                    /* 1em = 1 mm dans la page */
+    width:calc(148em + 2*var(--bleed));
+    height:calc(210em + 2*var(--bleed));
+    overflow:hidden;background:var(--papier);color:var(--marine);
+    display:grid;
+    box-shadow:0 2px 3px rgba(20,24,34,.12),0 10px 26px rgba(20,24,34,.16);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .recto{grid-template-rows:auto auto 1fr auto;}
+  .verso{grid-template-rows:auto 1fr auto;}
+  .pages.fini .page{--bleed:0em;}
+  @media (max-width:1100px){ .page{zoom:.8} }
+  @media (max-width:760px){ .page{zoom:.62} }
+  @media (max-width:460px){ .page{zoom:.45} }
+
+  .marks{position:absolute;inset:0;display:none;pointer-events:none;z-index:9;}
+  .show-marks .marks{display:block;}
+  .marks i{position:absolute;display:block;}
+  .marks .trim{inset:var(--bleed);border:.25em dashed rgba(255,138,0,.85);}
+  .marks .safe{inset:calc(8em + var(--bleed));border:.25em dashed rgba(11,187,246,.7);}
+
+  /* ---- En-tête commun ---- */
+  .hd{
+    height:calc(18em + var(--bleed));
+    background:var(--marine-deep);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:var(--bleed) calc(12em + var(--bleed)) 0;
+  }
+  .hd img{height:11em;width:auto;display:block;}
+  .hd .tel{text-align:right;}
+  .hd .tel b{
+    display:block;font-family:"Archivo",sans-serif;font-weight:700;
+    font-size:4.2em;letter-spacing:.01em;font-variant-numeric:tabular-nums;
+  }
+  .hd .tel span{
+    display:block;font-size:2em;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--cyan);margin-bottom:.4em;
+  }
+
+  /* ---- Recto ---- */
+  .shot{height:48em;object-fit:cover;width:100%;display:block;}
+  .recto .body{
+    padding:7em calc(12em + var(--bleed)) 5em;
+    display:flex;flex-direction:column;justify-content:center;min-height:0;
+  }
+  .eyebrow{
+    margin:0 0 3.2em;font-family:"Archivo",sans-serif;font-weight:600;
+    font-size:2.4em;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);
+  }
+  .recto h3{
+    margin:0 0 3.4em;font-family:"Archivo",sans-serif;font-weight:800;
+    font-size:8.4em;line-height:1.04;letter-spacing:-.02em;color:var(--marine);
+    text-wrap:balance;
+  }
+  .recto h3 em{font-style:normal;color:var(--cyan);}
+  .lede{
+    margin:0 0 3.6em;font-size:3.6em;line-height:1.4;color:var(--marine);opacity:.82;
+    max-width:34em;
+  }
+  .points{list-style:none;margin:0;padding:0;display:grid;gap:2.4em;}
+  .points li{display:grid;grid-template-columns:auto 1fr;gap:3em;align-items:start;}
+  .points b{
+    grid-column:2;font-family:"Archivo",sans-serif;font-weight:700;font-size:3.4em;
+    letter-spacing:.01em;color:var(--marine);
+  }
+  .points span{grid-column:2;font-size:3em;line-height:1.35;color:var(--marine);opacity:.72;}
+  .points i{
+    grid-row:1 / span 2;width:3.4em;height:3.4em;border-radius:50%;
+    background:var(--cyan);margin-top:1.2em;
+  }
+  .points li:nth-child(2) i{background:var(--orange);}
+  .points li:nth-child(3) i{background:var(--marine);}
+
+  .cta{
+    height:calc(25em + var(--bleed));
+    background:var(--marine);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:6em;
+    padding:0 calc(12em + var(--bleed)) var(--bleed);
+  }
+  .cta .lead{font-size:3.2em;line-height:1.3;max-width:17em;color:rgba(255,255,255,.82);}
+  .cta .lead b{display:block;color:#fff;font-weight:600;}
+  .cta .coord{text-align:right;display:grid;gap:1.2em;}
+  .cta .coord b{
+    font-family:"Archivo",sans-serif;font-weight:700;font-size:5.2em;line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .cta .coord span{font-size:2.9em;color:rgba(255,255,255,.8);}
+  .cta .coord span.web{color:var(--orange);font-weight:600;}
+
+  /* ---- Verso ---- */
+  .verso .body{
+    font-size:.9em;                   /* le verso porte plus de texte : echelle resserree */
+    padding:8.5em calc(13.3em + var(--bleed)/.9) 6.5em;
+    display:flex;flex-direction:column;justify-content:space-between;gap:4em;min-height:0;
+  }
+  .sec > h4{
+    margin:0 0 3em;font-family:"Archivo",sans-serif;font-weight:700;
+    font-size:4.3em;letter-spacing:-.01em;color:var(--marine);
+    padding-bottom:1.4em;border-bottom:.4em solid var(--cyan);
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:3.5em 6em;}
+  .grid2 h5{
+    margin:0 0 1.2em;font-family:"Archivo",sans-serif;font-weight:700;font-size:3.4em;
+    color:var(--marine);
+  }
+  .grid2 p{margin:0;font-size:2.9em;line-height:1.35;color:var(--marine);opacity:.72;}
+
+  .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:3em;}
+  .steps li{display:flex;gap:1.4em;align-items:baseline;}
+  .steps b{
+    font-family:"Archivo",sans-serif;font-weight:800;font-size:3.6em;line-height:1;
+    color:var(--cyan);flex:none;
+  }
+  .steps span{font-size:2.8em;line-height:1.3;color:var(--marine);opacity:.78;}
+
+  .prices{margin:0;display:grid;gap:0;}
+  .prices div{
+    display:flex;justify-content:space-between;align-items:baseline;gap:4em;
+    padding:1.9em 0;border-bottom:.25em solid rgba(38,44,66,.14);
+  }
+  .prices div:last-child{border-bottom:0;}
+  .prices dt{font-size:3.2em;color:var(--marine);}
+  .prices dd{
+    margin:0;font-family:"Archivo",sans-serif;font-weight:700;font-size:3.6em;
+    color:var(--marine);font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .prices dd.soft{color:var(--orange);}
+  .note{margin:2.2em 0 0;font-size:2.4em;line-height:1.4;color:var(--marine);opacity:.62;}
+
+  .frame{
+    border-left:.9em solid var(--orange);background:rgba(38,44,66,.05);
+    padding:3em 3.6em;
+  }
+  .frame p{margin:0;font-size:2.9em;line-height:1.4;color:var(--marine);}
+  .frame p + p{margin-top:1.6em;opacity:.72;}
+  .frame b{font-weight:600;}
+
+  .cols{columns:2;column-gap:6em;margin:0;padding:0;list-style:none;}
+  .cols li{
+    break-inside:avoid;font-size:2.9em;line-height:1.3;margin-bottom:1.3em;
+    color:var(--marine);display:flex;gap:1em;align-items:baseline;
+  }
+  .cols li::before{
+    content:"";flex:none;width:.5em;height:.5em;border-radius:50%;
+    background:var(--cyan);transform:translateY(-.15em);
+  }
+  .cols li:nth-child(even)::before{background:var(--orange);}
+
+  .ft{
+    height:calc(21em + var(--bleed));
+    background:var(--marine-deep);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:6em;
+    padding:0 calc(12em + var(--bleed)) var(--bleed);
+  }
+  .ft img{height:12.5em;width:auto;display:block;}
+  .ft .who{text-align:right;display:grid;gap:1em;}
+  .ft .who b{font-family:"Archivo",sans-serif;font-weight:700;font-size:3.3em;}
+  .ft .who span{font-size:2.5em;color:rgba(255,255,255,.78);}
+  .ft .who span.web{color:var(--orange);font-weight:600;}
+  .edge{
+    position:absolute;left:0;right:0;bottom:0;height:calc(2.5em + var(--bleed));
+    background:linear-gradient(90deg,var(--cyan) 0 42%,var(--orange) 42% 100%);
+  }
+
+  /* ---- Fiche de fabrication ---- */
+  .specs{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px 24px;}
+  .specs h2{
+    font-family:"Archivo",sans-serif;font-size:13px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px;color:var(--ink-soft);
+  }
+  .specs dl{margin:0;display:grid;grid-template-columns:minmax(9rem,auto) 1fr;gap:9px 20px;font-size:13.5px;line-height:1.45;}
+  .specs dt{color:var(--ink-soft);}
+  .specs dd{margin:0;}
+  .specs dd b{font-weight:600;}
+  @media (max-width:520px){ .specs dl{grid-template-columns:1fr;gap:2px 0;} .specs dd{margin-bottom:9px;} }
+
+  /* ---- Impression : une seule page a la fois (voir le script) ---- */
+  body.solo{margin:0;padding:0;background:#fff;}
+  body.solo .page{zoom:1;box-shadow:none;}
+  @media print{
+    body{background:#fff;margin:0;padding:0;}
+    .marks{display:none !important;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+</style>
+<style id="pagesize">@page{ size:154mm 216mm; margin:0; }</style>
+
+<div class="wrap">
+  <header>
+    <h1>Flyers A5 — BTP Expertise</h1>
+    <p>Trois flyers recto-verso, un par porte d'entrée du cabinet : le désordre constaté, l'achat immobilier, le projet de travaux. Même identité que la carte de visite, mêmes coordonnées.</p>
+  </header>
+
+  <div class="bar">
+    <button class="btn" id="bleed" type="button" aria-pressed="true">Fond perdu 154 × 216 mm</button>
+    <button class="btn" id="fini" type="button" aria-pressed="false">Format fini A5 148 × 210 mm</button>
+    <button class="btn" id="marks" type="button" aria-pressed="false">Afficher les repères</button>
+  </div>
+  <p class="hint">Les repères montrent le trait de coupe (orange) et la zone de sécurité (cyan) ; ils ne s'impriment pas. Les PDF sont générés à côté de ce fichier par <code>faire-flyers.py</code>.</p>
+
+  <div class="pages" id="pages">
+
+    <!-- ================= FLYER 1 : DESORDRES ================= -->
+    <article class="flyer">
+      <h2>Flyer 1 — <em>J'ai un problème</em> · fissures, infiltrations, malfaçons</h2>
+      <div class="pair">
+        <figure>
+          <figcaption>Recto</figcaption>
+          <div class="page recto" id="f1r">
+            <div class="hd">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="tel"><span>Un doute ? Appelez</span><b>06 81 65 15 91</b></div>
+            </div>
+            <img class="shot" src="__IMG_FISSURES__" alt="Fissure sur la façade d'un immeuble">
+            <div class="body">
+              <p class="eyebrow">Expertise bâtiment · Alpes-Maritimes &amp; Var</p>
+              <h3>Une fissure, une infiltration, <em>un doute.</em></h3>
+              <p class="lede">Avant d'engager des travaux, une assurance ou un litige, faites établir un constat technique par un expert indépendant.</p>
+              <ul class="points">
+                <li><i></i><b>Constater</b><span>Visite sur site, relevés, photographies des désordres.</span></li>
+                <li><i></i><b>Analyser</b><span>Origine du désordre, gravité, risques pour l'ouvrage.</span></li>
+                <li><i></i><b>Préconiser</b><span>Solutions techniques, priorités et points de vigilance.</span></li>
+              </ul>
+            </div>
+            <div class="cta">
+              <p class="lead"><b>Mickael Rigaud</b>Expert bâtiment · cabinet indépendant</p>
+              <div class="coord">
+                <b>06 81 65 15 91</b>
+                <span>contact@btpexpertise.fr</span>
+                <span class="web">btpexpertise.fr</span>
+              </div>
+            </div>
+            <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+          </div>
+        </figure>
+
+        <figure>
+          <figcaption>Verso</figcaption>
+          <div class="page verso" id="f1v">
+            <div class="hd">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="tel"><span>Expertise bâtiment</span><b>btpexpertise.fr</b></div>
+            </div>
+            <div class="body">
+              <section class="sec">
+                <h4>Ce que l'expert examine</h4>
+                <div class="grid2">
+                  <div>
+                    <h5>Fissures &amp; atteintes structurelles</h5>
+                    <p>Murs, planchers, façades : origine, gravité, risque pour la solidité de l'ouvrage.</p>
+                  </div>
+                  <div>
+                    <h5>Humidité &amp; infiltrations</h5>
+                    <p>Toiture, façade, terrasse, menuiseries : recherche de la cause avant la reprise.</p>
+                  </div>
+                  <div>
+                    <h5>Malfaçons &amp; non-conformités</h5>
+                    <p>Défauts d'exécution, non-respect des règles de l'art ou des normes en vigueur.</p>
+                  </div>
+                  <div>
+                    <h5>Plomberie, réseaux &amp; électricité</h5>
+                    <p>Désordres liés aux réseaux et aux installations, en habitation comme en copropriété.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="sec">
+                <h4>Comment ça se passe</h4>
+                <ol class="steps">
+                  <li><b>1</b><span>Premier échange</span></li>
+                  <li><b>2</b><span>Devis avant intervention</span></li>
+                  <li><b>3</b><span>Visite et constats</span></li>
+                  <li><b>4</b><span>Rapport écrit</span></li>
+                </ol>
+              </section>
+
+              <section class="sec">
+                <h4>Honoraires</h4>
+                <dl class="prices">
+                  <div><dt>Visite technique &amp; avis oral</dt><dd>590 €</dd></div>
+                  <div><dt>Expertise + compte rendu</dt><dd>790 €</dd></div>
+                  <div><dt>Expertise + rapport détaillé</dt><dd>990 €</dd></div>
+                </dl>
+                <p class="note">Tarifs TTC de départ. Chaque mission fait l'objet d'un devis précisant le périmètre d'intervention. Déplacement inclus dans un rayon de 30 km autour de Nice.</p>
+              </section>
+
+              <div class="frame">
+                <p><b>Indépendance.</b> BTP Expertise n'est pas rémunéré par les entreprises intervenant sur les projets de ses clients.</p>
+              </div>
+            </div>
+            <div class="ft">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="who">
+                <b>06 81 65 15 91</b>
+                <span>contact@btpexpertise.fr · 18 Place Masséna, 06000 Nice</span>
+                <span class="web">btpexpertise.fr</span>
+              </div>
+            </div>
+            <div class="edge"></div>
+            <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+          </div>
+        </figure>
+      </div>
+    </article>
+
+    <!-- ================= FLYER 2 : AVANT ACHAT ================= -->
+    <article class="flyer">
+      <h2>Flyer 2 — <em>Expertise avant achat</em> · acquéreurs et agences</h2>
+      <div class="pair">
+        <figure>
+          <figcaption>Recto</figcaption>
+          <div class="page recto" id="f2r">
+            <div class="hd">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="tel"><span>Visite sous 72 h</span><b>06 81 65 15 91</b></div>
+            </div>
+            <img class="shot" src="__IMG_ACHAT__" alt="Remise des clés d'un appartement">
+            <div class="body">
+              <p class="eyebrow">Expertise avant achat immobilier</p>
+              <h3>Avant de signer, <em>faites-le examiner.</em></h3>
+              <p class="lede">Les diagnostics obligatoires parlent d'amiante, de plomb et d'énergie. Ils ne disent rien de l'état réel du bâti.</p>
+              <ul class="points">
+                <li><i></i><b>Voir ce que la visite ne montre pas</b><span>Structure, toiture, étanchéité, réseaux, ventilation.</span></li>
+                <li><i></i><b>Chiffrer ce qui vous attend</b><span>Travaux à prévoir, urgence et ordre de priorité.</span></li>
+                <li><i></i><b>Décider en connaissance de cause</b><span>Négocier, renoncer, ou signer l'esprit tranquille.</span></li>
+              </ul>
+            </div>
+            <div class="cta">
+              <p class="lead"><b>Appartement ou maison</b>Nice, Cannes, Antibes et toute la Côte d'Azur</p>
+              <div class="coord">
+                <b>06 81 65 15 91</b>
+                <span>contact@btpexpertise.fr</span>
+                <span class="web">btpexpertise.fr</span>
+              </div>
+            </div>
+            <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+          </div>
+        </figure>
+
+        <figure>
+          <figcaption>Verso</figcaption>
+          <div class="page verso" id="f2v">
+            <div class="hd">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="tel"><span>Expertise avant achat</span><b>btpexpertise.fr</b></div>
+            </div>
+            <div class="body">
+              <section class="sec">
+                <h4>Ce qui est contrôlé pendant la visite</h4>
+                <ul class="cols">
+                  <li>Structure, fissures et désordres apparents</li>
+                  <li>Toiture, terrasses et étanchéité</li>
+                  <li>Humidité, infiltrations et ventilation</li>
+                  <li>Plomberie, réseaux et installations électriques</li>
+                  <li>Menuiseries, isolation et confort</li>
+                  <li>Parties communes et travaux votés en copropriété</li>
+                </ul>
+              </section>
+
+              <section class="sec">
+                <h4>Le bon moment pour nous appeler</h4>
+                <div class="grid2">
+                  <div>
+                    <h5>Avant le compromis</h5>
+                    <p>L'idéal : connaître l'état du bien avant de vous engager, et avant de discuter le prix.</p>
+                  </div>
+                  <div>
+                    <h5>Pendant les 10 jours de rétractation</h5>
+                    <p>Compromis signé : la visite se cale dans le délai légal, pendant lequel vous pouvez encore renoncer.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="sec">
+                <h4>Honoraires</h4>
+                <dl class="prices">
+                  <div><dt>Expertise avant achat — appartement</dt><dd>790 €</dd></div>
+                  <div><dt>Expertise avant achat — maison</dt><dd>990 €</dd></div>
+                  <div><dt>Assistance à la réception d'un bien neuf</dt><dd>690 €</dd></div>
+                </dl>
+                <p class="note">Tarifs TTC de départ, devis établi avant toute intervention. Déplacement inclus dans un rayon de 30 km autour de Nice.</p>
+              </section>
+
+              <div class="frame">
+                <p><b>Un regard qui n'appartient qu'à vous.</b> BTP Expertise n'est ni agent immobilier, ni entreprise de travaux, et n'est pas rémunéré par les entreprises intervenant sur les projets de ses clients.</p>
+              </div>
+            </div>
+            <div class="ft">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="who">
+                <b>06 81 65 15 91</b>
+                <span>contact@btpexpertise.fr · 18 Place Masséna, 06000 Nice</span>
+                <span class="web">btpexpertise.fr</span>
+              </div>
+            </div>
+            <div class="edge"></div>
+            <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+          </div>
+        </figure>
+      </div>
+    </article>
+
+    <!-- ================= FLYER 3 : AMO ================= -->
+    <article class="flyer">
+      <h2>Flyer 3 — <em>J'ai un projet</em> · assistance à maîtrise d'ouvrage</h2>
+      <div class="pair">
+        <figure>
+          <figcaption>Recto</figcaption>
+          <div class="page recto" id="f3r">
+            <div class="hd">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="tel"><span>Parlons de votre projet</span><b>06 81 65 15 91</b></div>
+            </div>
+            <img class="shot" src="__IMG_CHANTIER__" alt="Chantier de rénovation intérieure">
+            <div class="body">
+              <p class="eyebrow">Assistance à maîtrise d'ouvrage</p>
+              <h3>Vous faites des travaux. <em>Qui regarde pour vous ?</em></h3>
+              <p class="lede">Un professionnel du bâtiment à vos côtés, du premier devis jusqu'à la réception du chantier.</p>
+              <ul class="points">
+                <li><i></i><b>Analyser les devis</b><span>Comparaison technique et financière des propositions reçues.</span></li>
+                <li><i></i><b>Suivre le chantier</b><span>Visites sur site, observations techniques, comptes rendus.</span></li>
+                <li><i></i><b>Réceptionner</b><span>Assistance lors de la réception et dans la formulation des réserves.</span></li>
+              </ul>
+            </div>
+            <div class="cta">
+              <p class="lead"><b>Rénovation, sinistre, reprise de désordres</b>Particuliers et copropriétés</p>
+              <div class="coord">
+                <b>06 81 65 15 91</b>
+                <span>contact@btpexpertise.fr</span>
+                <span class="web">btpexpertise.fr</span>
+              </div>
+            </div>
+            <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+          </div>
+        </figure>
+
+        <figure>
+          <figcaption>Verso</figcaption>
+          <div class="page verso" id="f3v">
+            <div class="hd">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="tel"><span>Assistance à maîtrise d'ouvrage</span><b>btpexpertise.fr</b></div>
+            </div>
+            <div class="body">
+              <section class="sec">
+                <h4>Les étapes de l'accompagnement</h4>
+                <ul class="cols">
+                  <li>Étude du projet : besoins, contraintes, priorités</li>
+                  <li>Assistance à la définition des travaux</li>
+                  <li>Recherche et consultation des entreprises</li>
+                  <li>Analyse technique et financière des devis</li>
+                  <li>Conseil avant votre choix d'entreprise</li>
+                  <li>Visites et observations pendant les travaux</li>
+                  <li>Contrôle visuel de la qualité apparente</li>
+                  <li>Comptes rendus, points de vigilance, conseils</li>
+                  <li>Assistance à la réception et aux réserves</li>
+                </ul>
+              </section>
+
+              <section class="sec">
+                <h4>Honoraires</h4>
+                <dl class="prices">
+                  <div><dt>Analyse de devis</dt><dd>390 €</dd></div>
+                  <div><dt>AMO ponctuelle</dt><dd>590 €</dd></div>
+                  <div><dt>AMO complète</dt><dd class="soft">sur devis</dd></div>
+                </dl>
+                <p class="note">Tarifs TTC de départ. Le périmètre exact de la mission et les honoraires sont arrêtés par devis avant toute intervention.</p>
+              </section>
+
+              <div class="frame">
+                <p><b>Le cadre de la mission.</b> BTP Expertise conseille et assiste le maître d'ouvrage. Vous restez décisionnaire et contractez directement avec les entreprises.</p>
+                <p>La mission ne comprend ni la direction des travaux, ni les ordres d'exécution aux entreprises, ni les plans d'exécution, ni une mission d'ordonnancement, pilotage et coordination (OPC), ni la garantie des délais, du budget final ou de la bonne exécution des entreprises.</p>
+              </div>
+            </div>
+            <div class="ft">
+              <img src="__LOGO_SOMBRE__" alt="BTP Expertise">
+              <div class="who">
+                <b>06 81 65 15 91</b>
+                <span>contact@btpexpertise.fr · 18 Place Masséna, 06000 Nice</span>
+                <span class="web">btpexpertise.fr</span>
+              </div>
+            </div>
+            <div class="edge"></div>
+            <div class="marks"><i class="trim"></i><i class="safe"></i></div>
+          </div>
+        </figure>
+      </div>
+    </article>
+  </div>
+
+  <section class="specs">
+    <h2>À transmettre à l'imprimeur</h2>
+    <dl>
+      <dt>Format fini</dt>
+      <dd><b>A5 — 148 × 210 mm</b>, portrait, recto-verso</dd>
+      <dt>Fichier fourni</dt>
+      <dd><b>154 × 216 mm</b>, fond perdu de 3 mm sur les quatre côtés</dd>
+      <dt>Zone de sécurité</dt>
+      <dd>8 mm après coupe</dd>
+      <dt>Couleurs</dt>
+      <dd>Quadri recto-verso. Bleu nuit <b>#262C42</b>, cyan <b>#0BBBF6</b>, orange <b>#FF8A00</b></dd>
+      <dt>Papier conseillé</dt>
+      <dd>170 g couché mat pour une distribution large, 250 g pour un dépôt en agence ou en salle d'attente</dd>
+      <dt>Photos</dt>
+      <dd>Celles du site, entre 1 200 et 1 400 px de large : correct en A5, à remplacer par des photos de chantier du cabinet dès que possible</dd>
+      <dt>Mentions</dt>
+      <dd>SIRET et assurance responsabilité civile professionnelle à ajouter si le flyer est diffusé en boîtes aux lettres</dd>
+    </dl>
+  </section>
+</div>
+
+<script>
+  const pages = document.getElementById('pages');
+  const marks = document.getElementById('marks');
+  const bleedBtn = document.getElementById('bleed');
+  const finiBtn = document.getElementById('fini');
+  const pagesize = document.getElementById('pagesize');
+
+  function setFormat(withBleed){
+    pages.classList.toggle('fini', !withBleed);
+    bleedBtn.setAttribute('aria-pressed', String(withBleed));
+    finiBtn.setAttribute('aria-pressed', String(!withBleed));
+    pagesize.textContent = withBleed
+      ? '@page{ size:154mm 216mm; margin:0; }'
+      : '@page{ size:148mm 210mm; margin:0; }';
+  }
+  bleedBtn.addEventListener('click', () => setFormat(true));
+  finiBtn.addEventListener('click', () => setFormat(false));
+
+  marks.addEventListener('click', () => {
+    const on = marks.getAttribute('aria-pressed') === 'true';
+    marks.setAttribute('aria-pressed', String(!on));
+    marks.textContent = on ? 'Afficher les repères' : 'Masquer les repères';
+    pages.classList.toggle('show-marks', !on);
+  });
+
+  // Export PDF : ?p=f1r isole une seule page, ?bleed=0 sort le format fini.
+  const q = new URLSearchParams(location.search);
+  if (q.get('bleed') === '0') setFormat(false);
+  const seule = q.get('p') && document.getElementById(q.get('p'));
+  if (seule) {
+    const fini = pages.classList.contains('fini');
+    document.body.replaceChildren(seule);
+    document.body.classList.add('solo');
+    if (fini) seule.style.setProperty('--bleed', '0em');
+  }
+</script>

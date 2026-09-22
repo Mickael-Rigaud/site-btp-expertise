@@ -1,0 +1,11 @@
+; Identifiants FTP de l'hebergement OVH.
+; Copiez ce fichier en "ftp.ini" et remplissez les trois valeurs.
+; Elles se trouvent dans l'espace OVH : Web Cloud > Hebergements >
+; btpexpertise.fr > onglet FTP-SSH.
+; Le mot de passe FTP se (re)definit sur cette meme page, bouton "..." > "Changer le mot de passe".
+
+[ovh]
+hote = ftp.cluster121.hosting.ovh.net
+login = btpexpb
+motdepasse = BTPexpertise2026
+dossier = /www

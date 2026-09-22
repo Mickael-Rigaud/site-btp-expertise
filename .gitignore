@@ -1,0 +1,22 @@
+# --- Identifiants : ne jamais publier -------------------------------------
+ftp.ini
+.publie.json
+
+# --- Fichiers de travail Python -------------------------------------------
+__pycache__/
+
+# --- Pages generees --------------------------------------------------------
+# « python build.py » refabrique tout le site. Seul site/assets/ est une
+# source : images, video, feuille de style et script du site.
+site/*
+!site/assets/
+
+# --- Bibliotheques d'images ------------------------------------------------
+# Plus de 500 Mo de binaires. Git les stocke en entier a chaque version et ne
+# sait pas les comparer : ils alourdiraient le depot sans rien apporter.
+# Les textes, guides et scripts de ces dossiers restent suivis.
+capture/assets/
+# Le CSS et le JS des extensions WordPress, aspires lors de la migration.
+# Le site n'existe plus, ces fichiers ne servent plus a rien.
+capture/raw/
+reseaux-sociaux/visuels/

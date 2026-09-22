@@ -1,0 +1,24 @@
+
+			<div class="elementor-flip-box__layer elementor-flip-box__front">
+				<div class="elementor-flip-box__layer__overlay">
+					<div class="elementor-flip-box__layer__inner">
+													<div class="elementor-flip-box__image">
+								<img fetchpriority="high" decoding="async" width="500" height="500" src="Avis-Technique-Nice.png" class="attachment-full size-full wp-image-221" alt="" />							</div>
+													<h3 class="elementor-flip-box__layer__title">
+								Avis technique							</h3>
+											</div>
+				</div>
+			</div>
+			<div class="elementor-flip-box__layer elementor-flip-box__back">
+			<div class="elementor-flip-box__layer__overlay">
+				<div class="elementor-flip-box__layer__inner">
+											<div class="elementor-flip-box__layer__description">
+							Avis technique indépendant basé sur l’analyse des désordres, des documents et des normes applicables afin d’éclairer votre prise de décision.						</div>
+											<a class="elementor-flip-box__button elementor-button elementor-size-sm">
+							En savoir plus						</a>
+								</div>
+		</div>
+		</div>
+		</div>
+						</div>
+				
