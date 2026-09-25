@@ -2263,13 +2263,18 @@ def page_reglement():
         if p.get("livrable"):
             contenu += " &middot; <strong>" + p["livrable"] + "</strong>"
 
+        # Tarif et bouton dans la meme case, l'un sous l'autre : a deux
+        # familles cote a cote, une troisieme colonne ne laissait plus assez
+        # de place au descriptif.
         return """            <tr>
               <th scope="row">
                 <span class="regler__mission">%s</span>
                 <span class="regler__contenu">%s</span>
               </th>
-              <td class="regler__montant">%s</td>
-              <td class="regler__action">%s</td>
+              <td class="regler__droite">
+                <span class="regler__montant">%s</span>
+                <span class="regler__action">%s</span>
+              </td>
             </tr>""" % (p["nom"], contenu, montant, action)
 
     familles = []
