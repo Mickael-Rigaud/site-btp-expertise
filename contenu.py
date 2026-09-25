@@ -701,49 +701,24 @@ BESOINS = [
 #
 # Chaque ligne : (intitulé, ce que la mission recouvre, tarif de départ TTC).
 
-HONORAIRES = [
-    ("Expertise bâtiment", [
-        ("Expertise simple",
-         "Visite sur site, constat des désordres, avis technique et "
-         "restitution orale.",
-         "900 €"),                      # 750 € HT
-        ("Expertise avec rapport",
-         "Visite, analyse, photographies, recherches utiles et rapport "
-         "structuré remis par écrit.",
-         "1 440 €"),                    # 1 200 € HT
-        ("Expertise complexe",
-         "Désordres multiples, situation de litige, investigations et "
-         "technicité renforcées.",
-         "2 400 €"),                    # 2 000 € HT
-    ]),
-    ("Assistance à Maîtrise d’Ouvrage", [
-        ("Accompagnement de votre projet",
-         "Honoraires de 5 à 8 % du montant HT des travaux, selon le montant, "
-         "la durée, la complexité et le niveau d’accompagnement. Minimum "
-         "d’honoraires : 3 500 € HT.",
-         "4 200 €"),                    # 3 500 € HT
-    ]),
-]
-
 HONORAIRES_MENTION = (
-    "Chaque mission étant différente, un devis précisant le périmètre "
-    "d’intervention et les honoraires est établi avant toute intervention. "
-    "Les tarifs indiqués constituent des tarifs de départ et peuvent évoluer en "
-    "fonction de la nature du dossier, de sa complexité, de la superficie du bien, "
-    "des investigations nécessaires et du volume documentaire à analyser."
+    "Tarifs TTC à partir de, établis selon la nature de la mission, la surface "
+    "du bien, la complexité du dossier et le lieu d’intervention. Un devis est "
+    "établi avant toute intervention."
 )
 
-HONORAIRES_DEPLACEMENT = (
-    "Déplacement inclus dans un rayon de 30 km autour de Nice. Au-delà, les "
-    "éventuels frais de déplacement sont précisés dans le devis avant validation "
-    "de la mission."
+# L'AMO ne se chiffre pas au forfait : elle suit le montant des travaux.
+AMO_MENTION = (
+    "Les honoraires d’assistance à maîtrise d’ouvrage représentent de 5 à 8 % "
+    "du montant HT des travaux, selon le montant, la durée, la complexité et le "
+    "niveau d’accompagnement, avec un minimum d’honoraires de 3 500 € HT."
 )
 
 # Les trois seules lignes affichées sur l'accueil (§18)
 HONORAIRES_ACCUEIL = [
-    ("Expertise simple", "à partir de 900 € TTC"),
-    ("Expertise avec rapport", "à partir de 1 440 € TTC"),
-    ("Assistance à maîtrise d’ouvrage", "à partir de 4 200 € TTC"),
+    ("Expertise pré-achat", "à partir de 900 € TTC"),
+    ("Expertise désordres &amp; malfaçons", "à partir de 1 200 € TTC"),
+    ("Assistance à maîtrise d’ouvrage", "à partir de 5 % des travaux"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -1148,17 +1123,69 @@ PAIEMENT = {
     # Un règlement par mission, au tarif de départ de la grille des honoraires.
     # Chaque "lien" recevra l'adresse d'un lien de paiement Stripe ; tant qu'il
     # vaut A_CONFIGURER, le bouton affiche « Bientôt disponible ».
-    # L'AMO n'a pas de prix fixe : ses honoraires suivent le montant des
-    # travaux. La ligne affiche donc le minimum d'honoraires ; au-dela, le
-    # reglement passe par le lien a montant libre, ce que la page explique.
+    # La grille des missions, et le seul endroit où elle vit.
+    #
+    # Chaque prestation : ce qu'elle recouvre (« etapes »), ce que le client
+    # reçoit (« livrable »), et son tarif de départ.
+    #
+    # Trois formes de tarif, que la page sait distinguer :
+    #   "900 €"       un montant de départ, réglable en ligne
+    #   "5 %"         une part des travaux — ni « TTC », ni bouton de paiement
+    #   "Sur devis"   ni l'un ni l'autre
+    # « lien » ne sert qu'aux montants fixes ; tant qu'il vaut A_CONFIGURER,
+    # le bouton affiche « Bientôt disponible ».
     "prestations": [
         ("Expertise bâtiment", [
-            ("Expertise simple", "900 €", "A_CONFIGURER"),
-            ("Expertise avec rapport", "1 440 €", "A_CONFIGURER"),
-            ("Expertise complexe", "2 400 €", "A_CONFIGURER"),
+            {
+                "nom": "Expertise pré-achat",
+                "etapes": ["Inspection technique du bien",
+                           "Identification des anomalies et points de vigilance",
+                           "Travaux à anticiper"],
+                "livrable": "Rapport de synthèse",
+                "tarif": "900 €",
+                "lien": "A_CONFIGURER",
+            },
+            {
+                "nom": "Expertise désordres &amp; malfaçons",
+                "etapes": ["Constat des désordres",
+                           "Analyse des causes probables",
+                           "Préconisations techniques"],
+                "livrable": "Rapport d’expertise détaillé",
+                "tarif": "1 200 €",
+                "lien": "A_CONFIGURER",
+            },
+            {
+                "nom": "Assistance à réception de travaux",
+                "etapes": ["Contrôle des travaux réalisés",
+                           "Identification des défauts et non-conformités apparentes",
+                           "Aide à la formulation des réserves"],
+                "livrable": "Relevé des réserves",
+                "tarif": "750 €",
+                "lien": "A_CONFIGURER",
+            },
         ]),
         ("Assistance à Maîtrise d’Ouvrage", [
-            ("Accompagnement de votre projet", "4 200 €", "A_CONFIGURER"),
+            {
+                "nom": "AMO ciblée",
+                "etapes": ["Périmètre limité, peu de lots",
+                           "Durée courte, accompagnement contenu"],
+                "tarif": "5 %",
+                "lien": "",
+            },
+            {
+                "nom": "AMO étendue",
+                "etapes": ["Plusieurs lots, accompagnement régulier",
+                           "Durée intermédiaire"],
+                "tarif": "Sur devis",
+                "lien": "",
+            },
+            {
+                "nom": "AMO importante",
+                "etapes": ["Nombreux lots, longue durée",
+                           "Complexité ou interfaces élevées"],
+                "tarif": "Sur devis",
+                "lien": "",
+            },
         ]),
     ],
 }

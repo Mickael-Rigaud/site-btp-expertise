@@ -2111,18 +2111,19 @@ a[href^="tel:"].est-devoile { animation: devoile .28s ease; }
   .cases { grid-template-columns: 1fr; }
 }
 
-/* Sur telephone, deux colonnes laissent trop peu de place au descriptif :
-   la colonne de gauche tombait a une quinzaine de caracteres. Chaque ligne
-   passe donc en bloc, le tarif sous le texte plutot qu'a cote. */
+/* Sur telephone, trois colonnes ne tiennent pas : le descriptif tombait a une
+   quinzaine de caracteres et le bouton sortait de l'ecran. Chaque mission
+   passe donc en bloc — ce qu'elle recouvre, puis son tarif, puis comment la
+   regler. */
 @media (max-width: 560px) {
-  .tarif__table thead { display: none; }
-  .tarif__table tbody tr {
+  .regler__table tbody tr {
     display: block;
-    padding: 14px 0;
+    padding: 15px 0;
     border-top: 1px solid var(--gris-bord);
   }
-  .tarif__table tbody th,
-  .tarif__table tbody td.tarif__montant {
+  .regler__table tbody tr:first-child { border-top: 0; }
+  .regler__table tbody th,
+  .regler__table tbody td {
     display: block;
     width: auto;
     padding: 0;
@@ -2130,8 +2131,10 @@ a[href^="tel:"].est-devoile { animation: devoile .28s ease; }
     text-align: left;
     white-space: normal;
   }
-  .tarif__table tbody td.tarif__montant { margin-top: 9px; }
-  .tarif__depuis { display: inline; margin: 0 4px 0 0; }
+  .regler__montant { margin-top: 10px; }
+  .regler__depuis { display: inline; margin: 0 5px 0 0; }
+  .regler__action { margin-top: 12px; }
+  .regler__libre { text-align: left; }
 }
 
 /* ---------- Honoraires : encadré devis avec illustration ---------- */
@@ -2524,9 +2527,12 @@ a[href^="tel:"].est-devoile { animation: devoile .28s ease; }
 .zone-carte__bouton { margin-top: 6px; }
 
 /* ---------- Page Régler : une ligne par prestation ---------- */
+/* Une famille par ligne, sur toute la largeur. A deux colonnes, chaque
+   mission disposait de 330 px pour porter son nom, ce qu'elle recouvre, son
+   tarif et son bouton : tout se cassait en quatre. */
 .regler {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 26px;
   margin-top: 44px;
   align-items: start;
@@ -2555,9 +2561,32 @@ a[href^="tel:"].est-devoile { animation: devoile .28s ease; }
   font-size: .93rem;
   color: var(--texte);
   text-align: left;
-  padding: 13px 12px 13px 0;
+  padding: 15px 14px 15px 0;
   border-top: 1px solid var(--gris-bord);
   line-height: 1.4;
+}
+/* Le nom de la mission, puis ce qu'elle recouvre : un intitule seul ne dit
+   pas ce qu'on achete, et c'est la premiere question du visiteur. */
+.regler__mission { display: block; font-weight: 600; }
+.regler__contenu {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--corps);
+  font-size: .8rem;
+  line-height: 1.55;
+  color: var(--texte-clair);
+}
+.regler__contenu strong { color: var(--texte); font-weight: 600; }
+/* Une part des travaux ou un devis ne se prepaie pas : la case dit ou se
+   regle la mission, au lieu d'un bouton qui ne menerait nulle part. */
+.regler__libre {
+  font-family: var(--corps);
+  font-size: .76rem;
+  line-height: 1.4;
+  color: var(--texte-clair);
+  white-space: normal;
+  display: inline-block;
+  text-align: right;
 }
 .regler__table tr:first-child th,
 .regler__table tr:first-child td { border-top: 0; }

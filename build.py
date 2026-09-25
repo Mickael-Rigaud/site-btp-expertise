@@ -24,7 +24,7 @@ from contenu import (
     AMO, AMO_TITRE, AMO_ACCROCHE, AMO_PRINCIPE,
     HERO, BESOINS, REASSURANCE, ENGAGEMENT, AMO_PROJETS, VILLES_PRIORITAIRES,
     PARCOURS, PARCOURS_TITRE, PARCOURS_CHAPO, PARCOURS_PIED,
-    HONORAIRES, HONORAIRES_MENTION, HONORAIRES_DEPLACEMENT, HONORAIRES_ACCUEIL,
+    HONORAIRES_MENTION, AMO_MENTION, HONORAIRES_ACCUEIL,
     RESEAU_CHAPO, RESEAU_PROFILS, RESEAU_DEPARTEMENTS, RESEAU_EXPERIENCE,
 )
 
@@ -2238,16 +2238,39 @@ def page_reglement():
     """
     fil = [("Règlement de votre dossier", None)]
 
-    def ligne(intitule, montant, lien):
-        pret = lien != "A_CONFIGURER"
-        bouton = ('<a class="bouton bouton--bleu" href="%s" rel="noopener">Régler</a>' % lien
-                  if pret else
-                  '<span class="bouton bouton--inactif" aria-disabled="true">Bientôt disponible</span>')
+    def ligne(p):
+        # Un montant fixe se règle en ligne ; une part des travaux ou un devis
+        # ne se prépaient pas : ni « TTC », ni bouton, mais le renvoi au
+        # règlement à montant libre, expliqué juste au-dessus.
+        fixe = "€" in p["tarif"]
+        devis = p["tarif"] == "Sur devis"
+
+        montant = ("" if devis else '<span class="regler__depuis">à partir de</span>') \
+                  + p["tarif"] + (' <span>TTC</span>' if fixe else "")
+
+        if not fixe:
+            action = '<span class="regler__libre">Montant de votre lettre de mission</span>'
+        elif p["lien"] != "A_CONFIGURER":
+            action = ('<a class="bouton bouton--bleu" href="%s" rel="noopener">Régler</a>'
+                      % p["lien"])
+        else:
+            action = '<span class="bouton bouton--inactif" aria-disabled="true">Bientôt disponible</span>'
+
+        # Le livrable ferme la description : c'est ce que le client garde.
+        # Une mission d'AMO n'en a pas d'unique, la ligne s'arrête alors sur
+        # ce qu'elle recouvre.
+        contenu = " &middot; ".join(p["etapes"])
+        if p.get("livrable"):
+            contenu += " &middot; <strong>" + p["livrable"] + "</strong>"
+
         return """            <tr>
-              <th scope="row">%s</th>
-              <td class="regler__montant"><span class="regler__depuis">à partir de</span>%s <span>TTC</span></td>
+              <th scope="row">
+                <span class="regler__mission">%s</span>
+                <span class="regler__contenu">%s</span>
+              </th>
+              <td class="regler__montant">%s</td>
               <td class="regler__action">%s</td>
-            </tr>""" % (intitule, montant, bouton)
+            </tr>""" % (p["nom"], contenu, montant, action)
 
     familles = []
     for titre, prestations in PAIEMENT["prestations"]:
@@ -2258,7 +2281,7 @@ def page_reglement():
 %s
             </tbody>
           </table>
-        </div>""" % (titre, "\n".join(ligne(*p) for p in prestations)))
+        </div>""" % (titre, "\n".join(ligne(p) for p in prestations)))
 
     libre_pret = PAIEMENT["lien_libre"] != "A_CONFIGURER"
     bouton_libre = ('<a class="bouton bouton--bleu" href="%s" rel="noopener">Payer en ligne</a>'
@@ -2289,9 +2312,9 @@ def page_reglement():
 %s
       </div>
 
-      <p class="regler__mention">Les montants correspondent aux <strong>tarifs de départ</strong> de
-      nos missions. Si votre lettre de mission indique un montant différent, utilisez le règlement
-      à montant libre ci-dessus.</p>
+      <p class="regler__mention">%s</p>
+
+      <p class="regler__mention">%s</p>
 
       <p class="centre saut" style="color:var(--texte-clair);font-size:.9rem">
         Un doute sur le montant à régler ? <a href="/contact/">Écrivez-nous</a>,
@@ -2311,6 +2334,8 @@ def page_reglement():
                     "Paiement par carte bancaire, traité par <img class=\"logo-stripe\" src=\"/assets/img/stripe.svg\" alt=\"Stripe\" width=\"41\" height=\"17\" loading=\"lazy\" decoding=\"async\">."),
         bouton_libre,
         "\n".join(familles),
+        HONORAIRES_MENTION,
+        AMO_MENTION,
         bandeau_appel(
             "Une question sur votre dossier ?",
             "Nous vérifions avec vous le montant et le contenu de votre mission."),
