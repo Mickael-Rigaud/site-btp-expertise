@@ -750,3 +750,32 @@
     });
   }
 })();
+
+/* Mesure d'audience sans cookie (12/10/2026).
+   Envoie la page, la provenance et le type d'écran au CRM du cabinet, et rien
+   d'autre : aucun cookie, rien d'enregistré sur l'appareil, aucun identifiant.
+   Une « visite » est une arrivée depuis l'extérieur du site ; les pages vues
+   ensuite ne la recomptent pas. Détail dans la politique de confidentialité. */
+(function () {
+  try {
+    var hote = location.hostname.replace(/^www\./, "");
+    if (hote !== "btpexpertise.fr" || navigator.webdriver || !navigator.sendBeacon) return;
+    var ref = "";
+    try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : ""; } catch (e) { ref = ""; }
+    var interne = ref === hote;
+    var utm = "";
+    try { utm = new URLSearchParams(location.search).get("utm_source") || ""; } catch (e) { utm = ""; }
+    var l = window.innerWidth || 1200;
+    var donnees = JSON.stringify({
+      s: hote,
+      p: location.pathname,
+      r: interne ? "" : ref,
+      u: utm,
+      e: !interne,
+      a: l < 768 ? "mobile" : (l < 1100 ? "tablette" : "ordinateur")
+    });
+    navigator.sendBeacon("https://qnidmkufauzguultdmky.supabase.co/functions/v1/site-visite",
+      new Blob([donnees], { type: "text/plain" }));
+  } catch (e) { /* une mesure perdue ne doit jamais gêner la page */ }
+})();
+

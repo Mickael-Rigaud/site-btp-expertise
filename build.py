@@ -1979,7 +1979,7 @@ def page_mentions():
 
         <h2>Données personnelles et cookies</h2>
         <p>Le traitement des données personnelles collectées via le formulaire de demande d’expertise est détaillé dans notre <a href="/politique-de-confidentialite/">politique de confidentialité</a>.</p>
-        <p>Ce site ne dépose aucun cookie publicitaire ni traceur de mesure d’audience.</p>
+        <p>Ce site ne dépose aucun cookie. Une mesure d’audience anonyme, sans cookie ni enregistrement sur votre appareil, compte les pages consultées ; elle est détaillée dans la <a href="/politique-de-confidentialite/">politique de confidentialité</a>.</p>
 
         <h2>Recours à l’intelligence artificielle</h2>
         <p>Le cabinet utilise des outils d’intelligence artificielle pour l’assister dans la gestion administrative des dossiers, à savoir :</p>
@@ -2084,7 +2084,8 @@ def page_confidentialite():
         <p>Le site est intégralement servi en HTTPS. Les échanges depuis le formulaire sont chiffrés en transit. L’accès aux demandes reçues est limité aux seules personnes habilitées du cabinet.</p>
 
         <h2>Cookies et mesure d’audience</h2>
-        <p>Ce site ne dépose <strong>aucun cookie publicitaire</strong> et n’utilise aucun traceur de mesure d’audience. Aucun bandeau de consentement n’est donc nécessaire.</p>
+        <p>Ce site ne dépose <strong>aucun cookie</strong> et n’enregistre rien sur votre appareil. Aucun bandeau de consentement n’est donc nécessaire.</p>
+        <p>Pour connaître la fréquentation du site, chaque page consultée est comptée de façon anonyme : seuls la page, le site ou le réseau d’où vous venez (par exemple Google ou Instagram) et le type d’écran (téléphone, tablette ou ordinateur) sont transmis. Ni votre adresse IP, ni votre navigateur, ni aucun identifiant ne sont conservés, et ces chiffres ne servent qu’à des statistiques globales, consultées par le cabinet. Ce compteur est hébergé par Supabase, qui reçoit votre adresse IP pour acheminer la requête sans la conserver dans nos statistiques.</p>
         <p>Les polices de caractères sont chargées depuis Google Fonts ; à cette occasion, votre adresse IP est transmise à ce service pour permettre l’affichage.</p>
 
         <h2>Vos droits</h2>
